@@ -3,42 +3,98 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-latest-316192.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-# Edvard's Digital Service Hub
+# Edvard’s Digital Service Hub
 
-A robust backend platform for a personal brand website and digital service store. Built with **FastAPI**, **PostgreSQL**, and **JWT Authentication**.
+A modern backend platform for a personal brand website and digital service marketplace.  
+Built with **FastAPI**, **PostgreSQL**, and **JWT authentication**.
+
+---
 
 ## 🚀 Overview
-This project serves as the core engine for my personal website. It combines a professional portfolio with a specialized e-commerce system where clients can browse and purchase digital services.
+
+This project is the core backend of my personal digital ecosystem.
+
+It serves as a foundation for:
+- a personal portfolio website
+- a digital services marketplace
+- secure user authentication
+- future business logic and integrations
+
+The system is intentionally designed to be clean, minimal, and extensible,
+with a strong focus on scalability and long-term growth.
+
+---
 
 ## 🛠 Tech Stack
-* **Framework:** [FastAPI](https://fastapi.tiangolo.com/) (Asynchronous Python)
-* **Database:** [PostgreSQL](https://www.postgresql.org/) with [SQLAlchemy ORM](https://www.sqlalchemy.org/)
-* **Security:** [JWT (JSON Web Tokens)](https://jwt.io/) for secure authentication and [Argon2](https://argon2-cffi.readthedocs.io/en/stable/) for password hashing.
-* **Environment:** [python-dotenv](https://saurabh-kumar.com/python-dotenv/) for secure configuration.
 
-## ✨ Key Features
-* **User Authentication:** Secure Sign-up and Login using JWT.
-* **Service Catalog:** Backend support for listing digital services/products.
-* **Secure API:** CORS-enabled middleware for frontend integration (React/Vue).
-* **Data Integrity:** Automated database schema management with SQLAlchemy.
+- **Language:** Python 3.10+
+- **Framework:** FastAPI
+- **Database:** PostgreSQL
+- **ORM:** SQLAlchemy
+- **Authentication:** JWT (JSON Web Tokens)
+- **Password Hashing:** Argon2
+- **Environment Configuration:** python-dotenv
 
-## ⚙️ Installation & Setup
+---
 
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git](https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git)
-   cd YOUR_REPO_NAME
+## ✨ Features
 
-2. **Set up virtual environment:**
-python -m venv venv
-source venv/bin/activate  # On Linux/Fedora
+- 🔐 Secure user authentication with JWT
+- 🧾 Base structure for managing digital services and products
+- 🌐 API-first design (ready for React / Vue / mobile clients)
+- 🛡 Modern security practices
+- 🗄 Database schema management via SQLAlchemy
+- 📄 Automatic API documentation (Swagger / OpenAPI)
 
-3. **Install dependencies:**
-pip install -r requirements.txt
+---
 
-4. **Environment Variables: Create a .env file in the root directory and add:**
-DATABASE_URL=postgresql://user:password@localhost/dbname
-SECRET_KEY=your_super_secret_key
+## 📂 Project Structure
 
-5. **Run the server:**
+```text
+.
+├── app/
+│   ├── main.py          # Application entry point
+│   ├── database.py      # Database connection & session
+│   ├── models/          # SQLAlchemy models
+│   ├── routers/         # API route definitions
+│   └── schemas/         # Pydantic schemas
+├── .env # Make yourself
+├── .gitignore
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## 🔮 Architecture & Future Plans
+
+The project is structured to allow easy expansion without breaking core logic.
+
+Planned improvements include:
+- middleware-based authentication and authorization
+- role-based access control
+- service and order management
+- improved security layers
+- background tasks and integrations
+- production-ready deployment setup
+
+---
+
+## ⚙️ Setup & Run
+
+Create a virtual environment, install dependencies, configure environment variables,
+ensure PostgreSQL is running, and start the server with:
+
 uvicorn app.main:app --reload
+
+The API will be available at:
+http://127.0.0.1:8000
+
+Interactive documentation:
+http://127.0.0.1:8000/docs
+
+---
+
+## 📄 License
+
+MIT License
