@@ -52,9 +52,10 @@ with a strong focus on scalability and long-term growth.
 
 ```text
 .
+├── alembic/
 ├── app/
 │   ├── main.py          # Application entry point
-│   ├── database.py      # Database connection & session
+│   ├── core/      # Database connection & session
 │   ├── models/          # SQLAlchemy models
 │   ├── routers/         # API route definitions
 │   └── schemas/         # Pydantic schemas
