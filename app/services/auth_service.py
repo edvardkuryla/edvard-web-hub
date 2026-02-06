@@ -1,6 +1,6 @@
 from app.core.security import verify_password
 from app.core.jwt import create_access_token, create_refresh_token
-from app.models.user import User
+from app.models.models import User
 from app.models.refresh_token import RefreshToken
 from app.core.database import SessionLocal
 
