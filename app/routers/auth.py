@@ -1,32 +1,42 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from app.core.security import create_access_token
+from app.core.security import OAuth2PasswordRequestForm
+from app.services.auth_service import authenticate_user, login_user, save_refresh_token, revoke_refresh_token
 from app.schemas.schemas import UserLogin, Token, UserOut, UserCreate
 from app.repositories.user import verify_password, get_user_by_email, create_user
 from app.core.database import SessionLocal, engine
+from app.models.refresh_token import RefreshToken
 
 auth = APIRouter(prefix="/auth", tags=["Auth"])
 
-def get_db():
+@router.post("/login")
+def login(form_data:OAuth2PasswordRequestForm = Depends()):
+    user = authenticate_user(form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(status_code=400, detail="Invalid credentials")
+    
+    access, refresh = login_user(user)
+    save_refresh_token(refresh, user.id)
+
+    return {"access_token": access, "refresh_token": refresh, "token_type": "bearer"}
+
+@router.post("/refresh")
+def refresh_token(refresh_token: str):
+    payload = jwt.decode(refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
+    if payload.get("type") !="refresh":
+        raise HTTPException(status_code=401, detail="Invalid token type")
+    
     db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+    token_in_db = db.query(RefreshToken).filter(RefreshToken.token == refresh_token).first()
+    db.close()
+    if not token_in_db:
+        raise HTTPException(status_code=401, detail="Refresh token revoked or not found")
+    
+    user_id = payload.get{"sub"}
+    new_access = create_access_token({"sub": user_id})
+    return {"access_token": new_access, "token_type": "bearer"}
 
-@auth.post("/register", response_model=UserOut)
-def register(user: UserCreate, db: Session = Depends(get_db)):
-    existing_user = get_user_by_email(db, user.email)
-    if existing_user:
-        raise HTTPException(status_code=409, detail="User already exists")
-    db_user = create_user(db, user)
-    return db_user
-
-@auth.post("/login", response_model=Token)
-def login(user: UserLogin, db: Session = Depends(get_db)):
-    db_user = get_user_by_email(db, user.email)
-
-    if not db_user or not verify_password(user.password, db_user.password_hash):
-        raise HTTPException(status_code=400, detail="Incorrect email or password")
-    token = create_access_token({"sub": db_user.email})
-    return {"access_token": token, "token_type": "bearer"}
+@router.post("/logout")
+def logout(refresh_token: str):
+    revoke_refresh_token(refresh_token)
+    return {"msg": "Logged out"}
