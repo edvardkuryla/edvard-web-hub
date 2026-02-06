@@ -6,6 +6,7 @@ from app.schemas.schemas import UserLogin, Token, UserOut, UserCreate
 from app.repositories.user import verify_password, get_user_by_email, create_user
 from app.core.database import SessionLocal, engine
 from app.models.refresh_token import RefreshToken
+from app.core.deps import require_role
 
 auth = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -59,3 +60,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user)
 
     return {"message": "User created"}
+
+@router.get("/admin-only")
+def admin_panel(user=Depends(require_role("admin"))):
+    return {"msg": "Welcome, admin!"}
