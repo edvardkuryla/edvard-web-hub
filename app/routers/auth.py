@@ -40,3 +40,22 @@ def refresh_token(refresh_token: str):
 def logout(refresh_token: str):
     revoke_refresh_token(refresh_token)
     return {"msg": "Logged out"}
+
+@router.post("/register")
+def register(user: UserCreate, db: Session = Depends(get_db)):
+    existing = db.query(User).filter(User.email == user.email).first()
+    if existing:
+        raise HTTPException(status_code=409, detail="User already exists")
+
+    hashed_password = get_password_hash(user.password)
+
+    new_user = User(
+        email=user.email,
+        hashed_password=hashed_password
+    )
+
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return {"message": "User created"}
