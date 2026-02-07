@@ -1,6 +1,6 @@
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from jose import jwt
 
 SECRET_KEY = "YOUR_SUPER_SECRET_KEY"
@@ -8,6 +8,18 @@ ALGORITHM = "HS256"
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 15
 REFRESH_TOKEN_EXPIRE_DAYS = 7
+
+ph = PasswordHasher()
+
+def hash_password(password: str) -> str:
+    return ph.hash(password)
+
+def verify_password(password: str, hashed: str) -> bool:
+    try:
+        ph.verify(hashed, password)  # <-- было ph.verify_password
+        return True
+    except VerifyMismatchError:
+        return False
 
 def create_access_token(data: dict):
     to_encode = data.copy()
@@ -17,21 +29,6 @@ def create_access_token(data: dict):
 
 def create_refresh_token(data: dict):
     to_encode = data.copy()
-    expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    expire = datetime.now(timezone.utc) + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
     to_encode.update({"exp": expire, "type": "refresh"})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    
-
-
-ph = PasswordHasher()
-
-def hash_password(password: str) -> str:
-    return ph.hash(password)
-
-def verify_password(password: str, hashed: str) -> bool:
-    try:
-        ph.verify_password(hashed, password)
-        return True
-    except VerifyMismatchError:
-        return False
-    

@@ -1,6 +1,5 @@
-from app.core.security import verify_password, create_access_token, create_refresh_token
-from app.models.models import User
-from app.models.refresh_token import RefreshToken
+from app.core.security import verify_password, create_access_token, create_refresh_token, hash_password
+from app.models.models import User, RefreshToken
 from app.core.database import SessionLocal
 
 def authenticate_user(email: str, password: str):
@@ -9,9 +8,9 @@ def authenticate_user(email: str, password: str):
     db.close()
     if not user:
         return None
-    if not verify_password(password, user.hashed_password):
+    if not verify_password(password, user.password_hash):
         return None
-    return User
+    return user
 
 def login_user(user: User):
     access = create_access_token({"sub": str(user.id), "role": user.role})
@@ -20,7 +19,8 @@ def login_user(user: User):
 
 def save_refresh_token(token: str, user_id: int):
     db = SessionLocal()
-    db.dd(rt)
+    rt = RefreshToken(token=token, user_id=user_id)
+    db.add(rt)
     db.commit()
     db.close()
 
