@@ -1,12 +1,16 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
-from app.services.auth_service import authenticate_user, login_user, save_refresh_token, revoke_refresh_token
-from app.schemas.schemas import UserLogin, Token, UserOut, UserCreate
-from app.repositories.user import verify_password, get_user_by_email, create_user
+from app.core.security import create_access_token, create_refresh_token, hash_password, verify_password
+from app.users.service import authenticate_user, login_user, save_refresh_token, revoke_refresh_token
+from app.users.schemas import UserLogin, Token, UserOut, UserCreate
+from app.users.repository import verify_password, get_user_by_email, create_user, get_password_hash
 from app.core.database import SessionLocal, engine, get_db
 from app.models.refresh_token import RefreshToken
 from app.core.deps import require_role
+from app.models.models import User
+from app.core.config import settings
+from jose import jwt
 
 auth = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -48,11 +52,11 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     if existing:
         raise HTTPException(status_code=409, detail="User already exists")
 
-    hashed_password = get_password_hash(user.password)
+    password_hash = get_password_hash(user.password)
 
     new_user = User(
         email=user.email,
-        hashed_password=hashed_password
+        password_hash=password_hash
     )
 
     db.add(new_user)
