@@ -57,8 +57,7 @@ with a strong focus on scalability and long-term growth.
 │   ├── main.py          # Application entry point
 │   ├── core/      # Database connection & session
 │   ├── models/          # SQLAlchemy models
-│   ├── routers/         # API route definitions
-│   └── schemas/         # Pydantic schemas
+│   └── users/         # Pydantic schemas # API route definitions
 ├── .env # Make yourself
 ├── .gitignore
 ├── requirements.txt
