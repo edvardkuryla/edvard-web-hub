@@ -3,7 +3,7 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-latest-316192.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-# Edvard’s Digital Service Hub
+# Digital Service & Portfolio Hub
 
 A modern backend platform for a personal brand website and digital service marketplace.  
 Built with **FastAPI**, **PostgreSQL**, and **JWT authentication**.
@@ -25,7 +25,7 @@ with a strong focus on scalability and long-term growth.
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - **Language:** Python 3.10+
 - **Framework:** FastAPI
@@ -37,18 +37,18 @@ with a strong focus on scalability and long-term growth.
 
 ---
 
-## ✨ Features
+## Features
 
-- 🔐 Secure user authentication with JWT
-- 🧾 Base structure for managing digital services and products
-- 🌐 API-first design (ready for React / Vue / mobile clients)
-- 🛡 Modern security practices
-- 🗄 Database schema management via SQLAlchemy
-- 📄 Automatic API documentation (Swagger / OpenAPI)
+- Secure user authentication with JWT
+- Base structure for managing digital services and products
+- API-first design (ready for React / Vue / mobile clients)
+- Modern security practices
+- Database schema management via SQLAlchemy
+- Automatic API documentation (Swagger / OpenAPI)
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 .
