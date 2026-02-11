@@ -10,9 +10,9 @@ Built with **FastAPI**, **PostgreSQL**, and **JWT authentication**.
 
 ---
 
-## 🚀 Overview
+## Overview
 
-This project is the core backend of my personal digital ecosystem.
+My project is part of my portfolio. Everything except the front end was written by me with minimal use of AI
 
 It serves as a foundation for:
 - a personal portfolio website
@@ -66,7 +66,7 @@ with a strong focus on scalability and long-term growth.
 
 ---
 
-## 🔮 Architecture & Future Plans
+## Architecture & Future Plans
 
 The project is structured to allow easy expansion without breaking core logic.
 
@@ -80,7 +80,7 @@ Planned improvements include:
 
 ---
 
-## ⚙️ Setup & Run
+## Setup & Run
 
 Create a virtual environment, install dependencies, configure environment variables,
 ensure PostgreSQL is running, and start the server with:
@@ -92,6 +92,10 @@ http://127.0.0.1:8000
 
 Interactive documentation:
 http://127.0.0.1:8000/docs
+
+## With Docker
+
+docker compose up --build
 
 ---
 
