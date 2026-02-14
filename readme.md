@@ -53,11 +53,15 @@ with a strong focus on scalability and long-term growth.
 ```text
 .
 ├── alembic/
-├── app/
+├── config/ # Security & Config & Deps & Database
+├── src/
 │   ├── main.py          # Application entry point
 │   ├── core/      # Database connection & session
 │   ├── models/          # SQLAlchemy models
-│   └── users/         # Pydantic schemas # API route definitions
+│   ├── schemas/          # Schemas
+│   ├── repositories/          # CRUD
+│   ├── services/          # Logic
+│   └── api/v1 # routers
 ├── .env # Make yourself
 ├── .gitignore
 ├── requirements.txt
