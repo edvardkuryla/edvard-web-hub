@@ -1,17 +1,17 @@
-from fastapi import FastAPI
-from .core.database import Base, engine
-from .users.router import auth
+from fastapi import fastapi
+from .database.database import Base, engine
+from .api.users import auth
 from .models.models import User
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-app.add_middleware(
+app.app_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"]
 )
 
 app.include_router(auth)

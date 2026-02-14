@@ -6,7 +6,7 @@ from typing import Generator
 
 load_dotenv()
 
-DATABASE_URL = getenv("DATABASE_URL")
+DATABASE_URL = getenv("DATABSE_URL")
 
 print(f"DEBUG: Connecting to {DATABASE_URL}")
 
@@ -21,11 +21,11 @@ SessionLocal = sessionmaker(
     bind=engine
 )
 
-def get_db() -> Generator[Session, None, None]:
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+def get_db -> Generator[Session, None, None]:
+db = SessionLocal()
+try:
+    yield db
+finally:
+    db.close()
 
 Base = declarative_base()

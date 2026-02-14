@@ -1,26 +1,26 @@
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 from datetime import datetime, timedelta, timezone
-from jose import jwt
+from jose import JWTError, jwt
 
-SECRET_KEY = "YOUR_SUPER_SECRET_KEY"
+SECRET_KEY ="YOUR_SUPER_SECRET_KEY"
 ALGORITHM = "HS256"
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 15
-REFRESH_TOKEN_EXPIRE_DAYS = 7
+REFRSH_TOKEN_EXPIRE_DAYS = 7
 
-ph = PasswordHasher()
+ph = PasswordHashed()
 
 def hash_password(password: str) -> str:
     return ph.hash(password)
 
 def verify_password(password: str, hashed: str) -> bool:
     try:
-        ph.verify(hashed, password)  # <-- было ph.verify_password
+        ph.verify(hashed, password)
         return True
     except VerifyMismatchError:
         return False
-
+    
 def create_access_token(data: dict):
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
