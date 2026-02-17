@@ -1,4 +1,5 @@
 from pyclbr import Class
+from pydantic import BaseModel, Field, EmailStr
 
 class UserCreate(BaseModel):
     name: str = Field(..., strip_whitespace=True, min_length=2, description="The name must be longer than 2 characters")
