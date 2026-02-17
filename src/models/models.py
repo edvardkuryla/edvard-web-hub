@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from ...config.database.database import Base
+from config.database.database import Base
 
 class User(Base):
     __tablename__ = "users"
@@ -16,4 +16,4 @@ class RefreshToken(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     token = Column(String, unique=True, nullable=False)
-    user_id = Column(Integer, ForeignKey("users.id", onedelete="CASCADE"))
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))

@@ -1,5 +1,17 @@
-from fastapi import fastapi
-from .config.database.database import Base. engine
-from models.models import User
+from fastapi import FastAPI
+from config.database.database import Base, engine
+from src.api.v1.auth import auth
+from src.models.models import User
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(auth)

@@ -2,7 +2,7 @@ from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 from datetime import datetime, timedelta, timezone
 from jose import JWTError, jwt
-from config import settings
+from config.config import settings
 
 ph = PasswordHasher()
 
