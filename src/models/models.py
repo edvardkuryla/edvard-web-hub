@@ -10,6 +10,7 @@ class User(Base):
     email = Column(String, unique=True, nullable=False)
     password_hash = Column(String, nullable=False)
     role = Column(String, default="user")
+    refresh_tokens = relationship("RefreshToken", back_populates="user")
 
 class RefreshToken(Base):
     __tablename__ = "refresh_tokens"
@@ -17,3 +18,4 @@ class RefreshToken(Base):
     id = Column(Integer, primary_key=True, index=True)
     token = Column(String, unique=True, nullable=False)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    user = relationship("User", back_populates="refresh_tokens")

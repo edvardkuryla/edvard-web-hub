@@ -5,6 +5,7 @@ from config.security import create_access_token, create_refresh_token
 import src.repositories.users as repo 
 from src.models.models import RefreshToken
 from src.schemas.schemas import UserCreate # Импортируем схему для типизации
+from config.config import settings
 
 def authenticate_user(db: Session, email: str, password: str):
     user = repo.get_user_by_email(db, email)
@@ -31,3 +32,14 @@ def register_user(db: Session, user_data: UserCreate):
 
     user = repo.create_user(db, user_data)
     return user
+
+def refresh_access_token(db: Session, refresh_token: str):
+    # Ищем в базе
+    db_token = repo.get_refresh_token(db, refresh_token)
+    if not db_token:
+        return None
+    
+    # Генерируем новый access
+    user = db_token.user
+    new_access = create_access_token({"sub": str(user.id), "role": user.role})
+    return {"access_token": new_access, "token_type": "bearer"}

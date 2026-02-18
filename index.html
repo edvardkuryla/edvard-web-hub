@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edvard · Digital Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0a; --surface: #111111; --border: #222222;
+      --accent: #e8ff47; --text: #f0f0f0; --muted: #666;
+      --green: #4fffb0; --red: #ff5555;
+      --font-d: 'Bebas Neue', sans-serif; --font-b: 'DM Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-b); font-weight: 300; overflow-x: hidden; }
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: .4;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 3rem; border-bottom: 1px solid transparent; transition: border-color .3s, background .3s; }
+    nav.scrolled { background: rgba(10,10,10,.92); backdrop-filter: blur(12px); border-color: var(--border); }
+    .nav-logo { font-family: var(--font-d); font-size: 1.5rem; letter-spacing: .1em; color: var(--accent); text-decoration: none; }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta { background: var(--accent) !important; color: var(--bg) !important; padding: .5rem 1.25rem; border-radius: 2px; font-weight: 500 !important; }
+    .nav-cta:hover { background: #fff !important; }
+    .user-badge { display: none; align-items: center; gap: .6rem; font-size: .82rem; color: var(--muted); }
+    .user-badge.visible { display: flex; }
+    .user-badge span { color: var(--accent); font-weight: 500; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .btn-logout { background: none; border: 1px solid var(--border); color: var(--muted); padding: .3rem .7rem; font-size: .72rem; font-family: var(--font-b); letter-spacing: .06em; text-transform: uppercase; cursor: pointer; transition: all .2s; border-radius: 2px; }
+    .btn-logout:hover { border-color: var(--red); color: var(--red); }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; padding-top: 5rem; }
+    .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 6rem 3rem; }
+    .hero-tag { display: inline-flex; align-items: center; gap: .5rem; font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); margin-bottom: 2rem; }
+    .hero-tag::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+    .hero-title { font-family: var(--font-d); font-size: clamp(4rem,8vw,8rem); line-height: .92; letter-spacing: .02em; margin-bottom: 2rem; }
+    .hero-title span { color: var(--accent); }
+    .hero-desc { font-size: 1.05rem; line-height: 1.7; color: #aaa; max-width: 440px; margin-bottom: 3rem; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .85rem 2rem; font-family: var(--font-b); font-size: .82rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: all .2s; border-radius: 2px; }
+    .btn-primary { background: var(--accent); color: var(--bg); }
+    .btn-primary:hover { background: #fff; transform: translateY(-2px); }
+    .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+    .hero-right { position: relative; overflow: hidden; border-left: 1px solid var(--border); }
+    .hero-visual { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
+    .hero-blob { width: 380px; height: 380px; border-radius: 50%; background: radial-gradient(circle at 40% 40%, rgba(232,255,71,.15), rgba(255,107,53,.08) 50%, transparent 70%); animation: pulse 4s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+    .hero-stats { position: absolute; bottom: 3rem; right: 3rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .stat { text-align: right; }
+    .stat-num { font-family: var(--font-d); font-size: 2.5rem; color: var(--accent); line-height: 1; }
+    .stat-label { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+    /* MARQUEE */
+    .marquee-wrap { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; padding: 1rem 0; background: var(--surface); }
+    .marquee-track { display: flex; gap: 3rem; white-space: nowrap; animation: marquee 18s linear infinite; width: max-content; }
+    .marquee-track span { font-family: var(--font-d); font-size: 1.1rem; letter-spacing: .12em; color: var(--muted); }
+    .marquee-track span.ac { color: var(--accent); }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* SECTIONS */
+    section { padding: 7rem 3rem; max-width: 1200px; margin: 0 auto; }
+    .section-tag { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+    .section-tag::before { content: ''; width: 20px; height: 1px; background: var(--accent); }
+    .section-title { font-family: var(--font-d); font-size: clamp(2.5rem,5vw,4.5rem); line-height: 1; letter-spacing: .02em; margin-bottom: 4rem; }
+
+    /* SERVICES */
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+    .service-card { background: var(--bg); padding: 2.5rem; transition: background .2s; }
+    .service-card:hover { background: var(--surface); }
+    .service-icon { font-size: 2rem; margin-bottom: 1.5rem; display: block; }
+    .service-name { font-family: var(--font-d); font-size: 1.6rem; letter-spacing: .03em; margin-bottom: .75rem; }
+    .service-desc { font-size: .9rem; line-height: 1.7; color: #888; }
+    .service-price { margin-top: 1.5rem; font-family: var(--font-d); font-size: 1.2rem; color: var(--accent); }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 6rem; align-items: center; }
+    .about-text p { font-size: 1rem; line-height: 1.8; color: #aaa; margin-bottom: 1.5rem; }
+    .skills-list { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 2rem; }
+    .skill-tag { font-size: .72rem; letter-spacing: .08em; padding: .35rem .85rem; border: 1px solid var(--border); color: var(--muted); text-transform: uppercase; transition: all .2s; }
+    .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
+    .about-card { background: var(--surface); border: 1px solid var(--border); padding: 2.5rem; }
+    .about-card-title { font-family: var(--font-d); font-size: 1.1rem; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; margin-bottom: 2rem; }
+    .timeline-item { display: flex; gap: 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
+    .timeline-item:last-child { border: none; }
+    .timeline-year { font-family: var(--font-d); font-size: 1rem; color: var(--accent); min-width: 50px; }
+    .timeline-info h4 { font-size: .9rem; font-weight: 500; margin-bottom: .25rem; }
+    .timeline-info p { font-size: .8rem; color: var(--muted); }
+
+    /* CONTACT */
+    .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+    .contact-info p { font-size: 1rem; line-height: 1.8; color: #aaa; margin-bottom: 2rem; }
+    .contact-link { display: flex; align-items: center; gap: 1rem; color: var(--muted); text-decoration: none; font-size: .9rem; transition: color .2s; padding: .75rem 0; border-bottom: 1px solid var(--border); }
+    .contact-link:hover { color: var(--accent); }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: .4rem; }
+    .form-group label { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .form-group input, .form-group textarea { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: .85rem 1rem; font-family: var(--font-b); font-size: .95rem; outline: none; transition: border-color .2s; border-radius: 2px; resize: none; }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
+    #form-status { font-size: .85rem; color: var(--accent); min-height: 1.2em; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; }
+    footer p { font-size: .8rem; color: var(--muted); }
+    .footer-logo { font-family: var(--font-d); font-size: 1.2rem; color: var(--accent); letter-spacing: .1em; }
+
+    /* TOAST */
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: .75rem 1.5rem; font-size: .85rem; z-index: 9000; transition: transform .35s, opacity .35s; opacity: 0; border-radius: 2px; white-space: nowrap; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast.success { border-color: var(--green); color: var(--green); }
+    .toast.error { border-color: var(--red); color: var(--red); }
+
+    /* MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.82); backdrop-filter: blur(10px); z-index: 1000; display: none; align-items: center; justify-content: center; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: var(--surface); border: 1px solid var(--border); width: 100%; max-width: 420px; padding: 2.5rem; position: relative; }
+    .modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--muted); font-size: 1.5rem; cursor: pointer; transition: color .2s; }
+    .modal-close:hover { color: var(--text); }
+    .modal-tabs { display: flex; margin-bottom: 2rem; border-bottom: 1px solid var(--border); }
+    .modal-tab { padding: .75rem 1.5rem; background: none; border: none; font-family: var(--font-b); font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all .2s; }
+    .modal-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .modal-title { font-family: var(--font-d); font-size: 2rem; letter-spacing: .04em; margin-bottom: 1.5rem; }
+    .modal-form { display: none; flex-direction: column; gap: 1rem; }
+    .modal-form.active { display: flex; }
+    .modal-msg { font-size: .82rem; min-height: 1.2em; }
+    .modal-msg.ok { color: var(--green); }
+    .modal-msg.err { color: var(--red); }
+
+    /* CABINET */
+    .cabinet-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(8px); z-index: 900; display: none; align-items: flex-start; justify-content: flex-end; }
+    .cabinet-overlay.active { display: flex; }
+    .cabinet { width: 440px; height: 100vh; background: var(--surface); border-left: 1px solid var(--border); padding: 2rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1.5rem; animation: slideIn .3s ease; }
+    @keyframes slideIn { from{transform:translateX(100%)} to{transform:translateX(0)} }
+    .cabinet-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+    .cabinet-title { font-family: var(--font-d); font-size: 1.8rem; letter-spacing: .04em; }
+    .cabinet-close { background: none; border: none; color: var(--muted); font-size: 1.5rem; cursor: pointer; transition: color .2s; }
+    .cabinet-close:hover { color: var(--text); }
+    .cab-card { background: var(--bg); border: 1px solid var(--border); padding: 1.5rem; }
+    .cab-card-title { font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-bottom: .75rem; }
+    .cab-user-email { font-size: 1rem; font-weight: 500; margin-bottom: .25rem; }
+    .cab-user-id { font-size: .75rem; color: var(--muted); }
+    .cab-balance { font-family: var(--font-d); font-size: 2.5rem; color: var(--accent); line-height: 1; }
+    .cab-balance-sub { font-size: .75rem; color: var(--muted); margin-top: .25rem; letter-spacing: .08em; text-transform: uppercase; }
+    .orders-empty { text-align: center; padding: 2rem 0; color: var(--muted); font-size: .9rem; }
+    .orders-empty .emoji { font-size: 2rem; display: block; margin-bottom: .75rem; }
+    .order-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+    .order-item:last-child { border: none; }
+    .order-name { font-size: .9rem; font-weight: 500; margin-bottom: .25rem; }
+    .order-date { font-size: .75rem; color: var(--muted); }
+    .order-status { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; padding: .25rem .6rem; border-radius: 2px; }
+    .order-status.done { background: rgba(79,255,176,.12); color: var(--green); border: 1px solid rgba(79,255,176,.3); }
+    .order-status.pending { background: rgba(232,255,71,.1); color: var(--accent); border: 1px solid rgba(232,255,71,.3); }
+    .order-price { font-family: var(--font-d); font-size: 1.1rem; margin-top: .3rem; }
+    .cab-actions { display: flex; flex-direction: column; gap: .75rem; margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .cab-btn { width: 100%; padding: .75rem; font-family: var(--font-b); font-size: .82rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: all .2s; border-radius: 2px; }
+    .cab-btn-outline { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    .cab-btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .cab-btn-danger { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    .cab-btn-danger:hover { border-color: var(--red); color: var(--red); }
+
+    /* FADE IN */
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      section { padding: 5rem 1.5rem; }
+      .about-grid, .contact-wrap { grid-template-columns: 1fr; gap: 3rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+      .cabinet { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">EDVARD</a>
+  <ul class="nav-links">
+    <li><a href="#services">Услуги</a></li>
+    <li><a href="#about">Обо мне</a></li>
+    <li><a href="#contact">Контакты</a></li>
+    <li><a href="#" id="cabinetLink" style="display:none" onclick="openCabinet(); return false;">Кабинет</a></li>
+    <li>
+      <div class="user-badge" id="userBadge">
+        <span id="usernameDisplay"></span>
+        <button class="btn-logout" onclick="logout()">Выйти</button>
+      </div>
+      <a href="#" class="nav-cta" id="loginBtn" onclick="openModal(); return false;">Войти</a>
+    </li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Доступен для проектов</div>
+    <h1 class="hero-title">Digital<br>Service<br><span>Hub.</span></h1>
+    <!-- ✏️ Меняй описание -->
+    <p class="hero-desc">Разрабатываю цифровые продукты, автоматизирую процессы и строю надёжные бэкенд-системы. Быстро, чисто, с характером.</p>
+    <div class="hero-actions">
+      <a href="#services" class="btn btn-primary">Смотреть услуги ↓</a>
+      <a href="#contact" class="btn btn-secondary">Связаться</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-visual">
+      <div class="hero-blob"></div>
+      <div class="hero-stats">
+        <!-- ✏️ Меняй цифры -->
+        <div class="stat"><div class="stat-num">12+</div><div class="stat-label">Проектов</div></div>
+        <div class="stat"><div class="stat-num">3+</div><div class="stat-label">Года опыта</div></div>
+        <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Open Source</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>FastAPI</span><span class="ac">✦</span><span>PostgreSQL</span><span class="ac">✦</span>
+    <span>Python</span><span class="ac">✦</span><span>JWT Auth</span><span class="ac">✦</span>
+    <span>REST API</span><span class="ac">✦</span><span>SQLAlchemy</span><span class="ac">✦</span>
+    <span>Docker</span><span class="ac">✦</span><span>Alembic</span><span class="ac">✦</span>
+    <span>FastAPI</span><span class="ac">✦</span><span>PostgreSQL</span><span class="ac">✦</span>
+    <span>Python</span><span class="ac">✦</span><span>JWT Auth</span><span class="ac">✦</span>
+    <span>REST API</span><span class="ac">✦</span><span>SQLAlchemy</span><span class="ac">✦</span>
+    <span>Docker</span><span class="ac">✦</span><span>Alembic</span><span class="ac">✦</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-tag fade-in">Что я делаю</div>
+  <h2 class="section-title fade-in">Услуги</h2>
+  <div class="services-grid">
+    <!-- ✏️ Копируй/удаляй карточки, меняй иконку, название, описание, цену -->
+    <div class="service-card fade-in">
+      <span class="service-icon">⚡</span>
+      <div class="service-name">API Разработка</div>
+      <p class="service-desc">Проектирую и разрабатываю REST API на FastAPI с аутентификацией, документацией и чистой архитектурой.</p>
+      <div class="service-price">от $200</div>
+    </div>
+    <div class="service-card fade-in">
+      <span class="service-icon">🗄️</span>
+      <div class="service-name">Базы данных</div>
+      <p class="service-desc">Проектирование схем PostgreSQL, оптимизация запросов, миграции через Alembic и настройка ORM.</p>
+      <div class="service-price">от $150</div>
+    </div>
+    <div class="service-card fade-in">
+      <span class="service-icon">🔐</span>
+      <div class="service-name">Аутентификация</div>
+      <p class="service-desc">JWT-авторизация, хэширование паролей Argon2, управление сессиями, refresh-токены и роли.</p>
+      <div class="service-price">от $100</div>
+    </div>
+    <div class="service-card fade-in">
+      <span class="service-icon">🚀</span>
+      <div class="service-name">Деплой & DevOps</div>
+      <p class="service-desc">CI/CD пайплайны, контейнеризация через Docker и деплой на облачные платформы.</p>
+      <div class="service-price">от $120</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="border-top:1px solid var(--border)">
+  <div class="section-tag fade-in">Знакомство</div>
+  <h2 class="section-title fade-in">Обо мне</h2>
+  <div class="about-grid">
+    <div class="about-text fade-in">
+      <!-- ✏️ Меняй тексты -->
+      <p>Привет! Я Эдвард — backend-разработчик и создатель этого цифрового хаба. Специализируюсь на построении надёжных API-сервисов и цифровых платформ с нуля.</p>
+      <p>Работаю с Python-экосистемой: FastAPI, SQLAlchemy, PostgreSQL. Ценю чистый код, хорошую архитектуру и документацию, которую не стыдно показать.</p>
+      <div class="skills-list">
+        <!-- ✏️ Добавляй/удаляй теги -->
+        <span class="skill-tag">Python</span><span class="skill-tag">FastAPI</span>
+        <span class="skill-tag">PostgreSQL</span><span class="skill-tag">SQLAlchemy</span>
+        <span class="skill-tag">Docker</span><span class="skill-tag">JWT</span>
+        <span class="skill-tag">Alembic</span><span class="skill-tag">Git</span><span class="skill-tag">REST API</span>
+      </div>
+    </div>
+    <div class="about-visual fade-in">
+      <div class="about-card">
+        <div class="about-card-title">Опыт</div>
+        <!-- ✏️ Меняй года и описания -->
+        <div class="timeline-item">
+          <div class="timeline-year">2024</div>
+          <div class="timeline-info"><h4>Backend Developer</h4><p>Фриланс · Личные проекты</p></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2023</div>
+          <div class="timeline-info"><h4>Python Developer</h4><p>Учёба · Первые коммерческие проекты</p></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2022</div>
+          <div class="timeline-info"><h4>Начало пути</h4><p>Изучение Python, SQL, алгоритмов</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="border-top:1px solid var(--border)">
+  <div class="section-tag fade-in">Связь</div>
+  <h2 class="section-title fade-in">Напиши мне</h2>
+  <div class="contact-wrap">
+    <div class="contact-info fade-in">
+      <p>Готов обсудить твой проект, ответить на вопросы или просто поговорить о технологиях. Обычно отвечаю в течение нескольких часов.</p>
+      <!-- ✏️ Замени ссылки и контакты на свои -->
+      <div>
+        <a href="https://github.com/edvardkuryla" class="contact-link" target="_blank"><span>⌥</span><span>github.com/edvardkuryla</span></a>
+        <a href="mailto:your@email.com" class="contact-link"><span>✉</span><span>your@email.com</span></a>
+        <a href="https://t.me/yourusername" class="contact-link" target="_blank"><span>✈</span><span>@yourtelegram</span></a>
+      </div>
+    </div>
+    <div class="fade-in">
+      <form class="contact-form" onsubmit="handleContact(event)">
+        <div class="form-group"><label>Ваше имя</label><input type="text" id="c-name" placeholder="Иван Иванов" required /></div>
+        <div class="form-group"><label>Email</label><input type="email" id="c-email" placeholder="ivan@example.com" required /></div>
+        <div class="form-group"><label>Сообщение</label><textarea id="c-msg" rows="4" placeholder="Расскажи о проекте..." required></textarea></div>
+        <button type="submit" class="btn btn-primary">Отправить →</button>
+        <div id="form-status"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">EDVARD</span>
+  <p>© 2025 Edvard's Digital Hub. Все права защищены.</p>
+  <p style="color:var(--border)">Built with FastAPI + ❤️</p>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="tab-login" onclick="switchTab('login')">Вход</button>
+      <button class="modal-tab" id="tab-register" onclick="switchTab('register')">Регистрация</button>
+    </div>
+
+    <!--
+      ЛОГИН: использует OAuth2PasswordRequestForm
+      → form-urlencoded, поле "username" = email пользователя, "password" = пароль
+    -->
+    <form class="modal-form active" id="form-login" onsubmit="handleLogin(event)">
+      <div class="modal-title">Войти</div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="l-email" placeholder="you@example.com" required />
+      </div>
+      <div class="form-group">
+        <label>Пароль</label>
+        <input type="password" id="l-password" placeholder="••••••••" required />
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%">Войти →</button>
+      <div class="modal-msg" id="login-msg"></div>
+    </form>
+
+    <!--
+      РЕГИСТРАЦИЯ: JSON body { name, email, password }
+      name >= 2 символа, password >= 8 символов  (валидация из UserCreate)
+    -->
+    <form class="modal-form" id="form-register" onsubmit="handleRegister(event)">
+      <div class="modal-title">Регистрация</div>
+      <div class="form-group">
+        <label>Имя (мин. 2 символа)</label>
+        <input type="text" id="r-name" placeholder="Иван" minlength="2" required />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="r-email" placeholder="you@example.com" required />
+      </div>
+      <div class="form-group">
+        <label>Пароль (мин. 8 символов)</label>
+        <input type="password" id="r-password" placeholder="••••••••" minlength="8" required />
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%">Создать аккаунт →</button>
+      <div class="modal-msg" id="register-msg"></div>
+    </form>
+  </div>
+</div>
+
+<!-- PERSONAL CABINET (slide-in панель) -->
+<div class="cabinet-overlay" id="cabinetOverlay">
+  <div class="cabinet">
+    <div class="cabinet-header">
+      <div class="cabinet-title">Кабинет</div>
+      <button class="cabinet-close" onclick="hideCabinet()">×</button>
+    </div>
+
+    <div class="cab-card">
+      <div class="cab-card-title">Профиль</div>
+      <div class="cab-user-email" id="cab-email">—</div>
+      <div class="cab-user-id" id="cab-id"></div>
+    </div>
+
+    <!--
+      Баланс — заглушка.
+      Когда реализуешь /users/balance на бекенде — раскомментируй в JS функцию refreshCabinet
+    -->
+    <div class="cab-card">
+      <div class="cab-card-title">Баланс</div>
+      <div class="cab-balance" id="cab-balance">$0.00</div>
+      <div class="cab-balance-sub">Доступно</div>
+    </div>
+
+    <!--
+      История заказов — заглушка.
+      Когда реализуешь /orders на бекенде — раскомментируй loadOrders() в JS
+    -->
+    <div class="cab-card" style="flex:1; min-height: 180px;">
+      <div class="cab-card-title">История заказов</div>
+      <div id="cab-orders">
+        <div class="orders-empty">
+          <span class="emoji">📋</span>
+          Заказов пока нет.<br>Выбери услугу и сделай первый!
+        </div>
+      </div>
+    </div>
+
+    <div class="cab-actions">
+      <button class="cab-btn cab-btn-outline" onclick="refreshCabinet()">↻ Обновить</button>
+      <button class="cab-btn cab-btn-danger" onclick="logout(); hideCabinet()">Выйти из аккаунта</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════
+//  ⚙️ КОНФИГ
+// ════════════════════════════════════════════════════
+const API_BASE = 'http://127.0.0.1:8000'; // ← твой FastAPI сервер
+
+// ════════════════════════════════════════════════════
+//  TOAST
+// ════════════════════════════════════════════════════
+function showToast(text, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = text;
+  t.className = 'toast ' + type;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ════════════════════════════════════════════════════
+//  ТОКЕНЫ — хранение в localStorage
+// ════════════════════════════════════════════════════
+const LS = {
+  setTokens(access, refresh) {
+    localStorage.setItem('access_token', access);
+    if (refresh) localStorage.setItem('refresh_token', refresh);
+  },
+  clear() {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('user_data');
+  },
+  access: () => localStorage.getItem('access_token'),
+  refresh: () => localStorage.getItem('refresh_token'),
+  saveUser: (u) => localStorage.setItem('user_data', JSON.stringify(u)),
+  getUser() { try { return JSON.parse(localStorage.getItem('user_data')); } catch { return null; } }
+};
+
+// ════════════════════════════════════════════════════
+//  apiFetch — авто-рефреш access_token
+//
+//  Если запрос вернул 401 — пробуем POST /auth/refresh
+//  с телом { refresh_token: "..." }
+//  Если и он вернул ошибку — принудительный logout
+//
+//  ⚠️ Тебе нужно добавить /auth/refresh на бекенд!
+//  Пример эндпоинта — смотри раздел "Что нужно добавить" ниже
+// ════════════════════════════════════════════════════
+async function apiFetch(url, options = {}) {
+  options.headers = { ...(options.headers || {}), 'Authorization': 'Bearer ' + LS.access() };
+  let res = await fetch(API_BASE + url, options);
+
+  if (res.status === 401 && LS.refresh()) {
+    try {
+      const rRes = await fetch(`${API_BASE}/auth/refresh`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refresh_token: LS.refresh() })
+      });
+      if (rRes.ok) {
+        const rData = await rRes.json();
+        LS.setTokens(rData.access_token, rData.refresh_token || LS.refresh());
+        options.headers['Authorization'] = 'Bearer ' + rData.access_token;
+        res = await fetch(API_BASE + url, options);
+      } else {
+        forceLogout('Сессия истекла — войдите снова');
+        return null;
+      }
+    } catch {
+      forceLogout('Ошибка соединения');
+      return null;
+    }
+  }
+  return res;
+}
+
+// ════════════════════════════════════════════════════
+//  AUTH STATE — проверяем при загрузке страницы
+// ════════════════════════════════════════════════════
+async function checkAuth() {
+  const badge = document.getElementById('userBadge');
+  const loginBtn = document.getElementById('loginBtn');
+  const cabinetLink = document.getElementById('cabinetLink');
+
+  if (!LS.access()) {
+    badge.classList.remove('visible');
+    loginBtn.style.display = '';
+    cabinetLink.style.display = 'none';
+    return;
+  }
+
+  const res = await apiFetch('/auth/me');
+  if (res && res.ok) {
+    const user = await res.json();
+    LS.saveUser(user);
+    document.getElementById('usernameDisplay').textContent = user.email;
+    badge.classList.add('visible');
+    loginBtn.style.display = 'none';
+    cabinetLink.style.display = '';
+  } else {
+    LS.clear();
+    badge.classList.remove('visible');
+    loginBtn.style.display = '';
+    cabinetLink.style.display = 'none';
+  }
+}
+
+function logout() {
+  LS.clear();
+  hideCabinet();
+  checkAuth();
+  showToast('Вы вышли из аккаунта');
+}
+
+function forceLogout(msg) {
+  LS.clear();
+  hideCabinet();
+  document.getElementById('userBadge').classList.remove('visible');
+  document.getElementById('loginBtn').style.display = '';
+  document.getElementById('cabinetLink').style.display = 'none';
+  showToast(msg, 'error');
+}
+
+checkAuth();
+
+// ════════════════════════════════════════════════════
+//  NAV SCROLL
+// ════════════════════════════════════════════════════
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ════════════════════════════════════════════════════
+//  FADE IN ON SCROLL
+// ════════════════════════════════════════════════════
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+// ════════════════════════════════════════════════════
+//  AUTH MODAL
+// ════════════════════════════════════════════════════
+function openModal() {
+  document.getElementById('authModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('authModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.getElementById('authModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeModal();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') { closeModal(); hideCabinet(); }
+});
+
+function switchTab(tab) {
+  document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.modal-form').forEach(f => f.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('form-' + tab).classList.add('active');
+}
+
+// ════════════════════════════════════════════════════
+//  LOGIN
+//  Твой роут: POST /auth/login
+//  Ожидает: OAuth2PasswordRequestForm (form-urlencoded)
+//  Поля: username = email, password = пароль
+//  Важно: authenticate_user проверяет по email, поэтому
+//  в поле username мы шлём email
+// ════════════════════════════════════════════════════
+async function handleLogin(e) {
+  e.preventDefault();
+  const msg = document.getElementById('login-msg');
+  const email = document.getElementById('l-email').value.trim();
+  const password = document.getElementById('l-password').value;
+
+  setMsg(msg, 'Входим...', '');
+  try {
+    const res = await fetch(`${API_BASE}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ username: email, password }) // username = email!
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || JSON.stringify(data));
+
+    LS.setTokens(data.access_token, data.refresh_token);
+    setMsg(msg, '✓ Успешно!', 'ok');
+    setTimeout(async () => {
+      closeModal();
+      await checkAuth();
+      showToast('Добро пожаловать!', 'success');
+    }, 600);
+  } catch (err) {
+    setMsg(msg, '✗ ' + err.message, 'err');
+  }
+}
+
+// ════════════════════════════════════════════════════
+//  REGISTER
+//  Твой роут: POST /auth/register
+//  Ожидает JSON: { name, email, password }
+//  Схема UserCreate: name >= 2 символа, password >= 8
+//  ⚠️ Поле именно "name", не "username"!
+// ════════════════════════════════════════════════════
+async function handleRegister(e) {
+  e.preventDefault();
+  const msg = document.getElementById('register-msg');
+  const name = document.getElementById('r-name').value.trim();
+  const email = document.getElementById('r-email').value.trim();
+  const password = document.getElementById('r-password').value;
+
+  setMsg(msg, 'Создаём аккаунт...', '');
+  try {
+    const res = await fetch(`${API_BASE}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || JSON.stringify(data));
+
+    setMsg(msg, '✓ Аккаунт создан! Теперь войдите.', 'ok');
+    setTimeout(() => switchTab('login'), 1400);
+  } catch (err) {
+    setMsg(msg, '✗ ' + err.message, 'err');
+  }
+}
+
+function setMsg(el, text, type) {
+  el.textContent = text;
+  el.className = 'modal-msg ' + type;
+}
+
+// ════════════════════════════════════════════════════
+//  CONTACT FORM
+// ════════════════════════════════════════════════════
+function handleContact(e) {
+  e.preventDefault();
+  const status = document.getElementById('form-status');
+  status.textContent = '✓ Сообщение отправлено! Скоро отвечу.';
+  e.target.reset();
+  setTimeout(() => status.textContent = '', 4000);
+}
+
+// ════════════════════════════════════════════════════
+//  ЛИЧНЫЙ КАБИНЕТ
+// ════════════════════════════════════════════════════
+function openCabinet() {
+  refreshCabinet();
+  document.getElementById('cabinetOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function hideCabinet() {
+  document.getElementById('cabinetOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.getElementById('cabinetOverlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) hideCabinet();
+});
+
+async function refreshCabinet() {
+  const res = await apiFetch('/auth/me');
+  if (!res) return;
+  if (res.ok) {
+    const user = await res.json();
+    LS.saveUser(user);
+    document.getElementById('cab-email').textContent = user.email;
+    document.getElementById('cab-id').textContent = 'ID: ' + user.id;
+  }
+
+  // TODO: когда добавишь /users/balance — раскомментируй:
+  // const balRes = await apiFetch('/users/balance');
+  // if (balRes && balRes.ok) {
+  //   const b = await balRes.json();
+  //   document.getElementById('cab-balance').textContent = '$' + b.amount.toFixed(2);
+  // }
+
+  // TODO: когда добавишь /orders — раскомментируй:
+  // loadOrders();
+}
+
+// Готовая функция для заказов — раскомментируй когда бекенд будет готов
+// async function loadOrders() {
+//   const res = await apiFetch('/orders');
+//   if (!res || !res.ok) return;
+//   const orders = await res.json();
+//   const container = document.getElementById('cab-orders');
+//   if (!orders.length) {
+//     container.innerHTML = '<div class="orders-empty"><span class="emoji">📋</span>Заказов пока нет.</div>';
+//     return;
+//   }
+//   container.innerHTML = orders.map(o => `
+//     <div class="order-item">
+//       <div>
+//         <div class="order-name">${o.service_name}</div>
+//         <div class="order-date">${new Date(o.created_at).toLocaleDateString('ru')}</div>
+//         <div class="order-price">$${o.price}</div>
+//       </div>
+//       <span class="order-status ${o.status === 'done' ? 'done' : 'pending'}">
+//         ${o.status === 'done' ? 'Готово' : 'В работе'}
+//       </span>
+//     </div>
+//   `).join('');
+// }
+</script>
+</body>
+</html>
