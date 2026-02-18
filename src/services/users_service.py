@@ -10,7 +10,6 @@ def authenticate_user(db: Session, email: str, password: str):
     user = repo.get_user_by_email(db, email)
     if not user:
         return None
-    # Используем версию из репозитория, как ты и хотел
     if not repo.verify_password(password, user.password_hash):
         return None
     return user
@@ -23,9 +22,9 @@ def login_user(user):
 def save_refresh_token(db: Session, token: str, user_id: int):
     rt = RefreshToken(token=token, user_id=user_id)
     db.add(rt)
-    db.commit() # Если упадет тут, FastAPI сам обработает ошибку 500
+    db.commit()
 
-def register_user(db: Session, user_data: UserCreate): # Добавили тип
+def register_user(db: Session, user_data: UserCreate):
     existing_user = repo.get_user_by_email(db, user_data.email)
     if existing_user:
         raise HTTPException(status_code=400, detail="User already exists")

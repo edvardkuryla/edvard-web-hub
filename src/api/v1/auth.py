@@ -4,6 +4,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from config.database.database import get_db
 from src.services.users_service import authenticate_user, login_user, save_refresh_token, register_user
 from src.schemas.schemas import UserOut, UserCreate
+import src.repositories.users as repo
+from config.deps import get_current_user
 
 auth = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -27,3 +29,7 @@ def register(data: UserCreate, db: Session = Depends(get_db)):
     # ИСПРАВИЛИ: передаем db и весь объект data целиком
     user = register_user(db, data)
     return user
+
+@auth.get("/me", response_model=UserOut)
+def get_me(current_user: UserOut = Depends(get_current_user)):
+    return current_user
