@@ -1,759 +1,776 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Edvard · Digital Hub</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #0a0a0a; --surface: #111111; --border: #222222;
-      --accent: #e8ff47; --text: #f0f0f0; --muted: #666;
-      --green: #4fffb0; --red: #ff5555;
-      --font-d: 'Bebas Neue', sans-serif; --font-b: 'DM Sans', sans-serif;
-    }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--text); font-family: var(--font-b); font-weight: 300; overflow-x: hidden; }
-    body::before {
-      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: .4;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edvard Web Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@100;200;300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #080807;
+  --deep: #0f0e0b;
+  --card: #131209;
+  --white: #f2ede3;
+  --white-dim: rgba(242,237,227,0.55);
+  --white-faint: rgba(242,237,227,0.04);
+  --gold: #c5a24a;
+  --gold-l: #dbb96a;
+  --gold-dim: rgba(197,162,74,0.12);
+  --gold-faint: rgba(197,162,74,0.05);
+  --border: rgba(197,162,74,0.16);
+  --border-light: rgba(242,237,227,0.06);
+  --gray: #888070;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:'Jost',sans-serif;font-weight:200;min-height:100vh;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
 
-    /* NAV */
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 3rem; border-bottom: 1px solid transparent; transition: border-color .3s, background .3s; }
-    nav.scrolled { background: rgba(10,10,10,.92); backdrop-filter: blur(12px); border-color: var(--border); }
-    .nav-logo { font-family: var(--font-d); font-size: 1.5rem; letter-spacing: .1em; color: var(--accent); text-decoration: none; }
-    .nav-links { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; transition: color .2s; }
-    .nav-links a:hover { color: var(--text); }
-    .nav-cta { background: var(--accent) !important; color: var(--bg) !important; padding: .5rem 1.25rem; border-radius: 2px; font-weight: 500 !important; }
-    .nav-cta:hover { background: #fff !important; }
-    .user-badge { display: none; align-items: center; gap: .6rem; font-size: .82rem; color: var(--muted); }
-    .user-badge.visible { display: flex; }
-    .user-badge span { color: var(--accent); font-weight: 500; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .btn-logout { background: none; border: 1px solid var(--border); color: var(--muted); padding: .3rem .7rem; font-size: .72rem; font-family: var(--font-b); letter-spacing: .06em; text-transform: uppercase; cursor: pointer; transition: all .2s; border-radius: 2px; }
-    .btn-logout:hover { border-color: var(--red); color: var(--red); }
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 60px;height:68px;
+  background:rgba(8,8,7,0.88);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border-light);
+}
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;
+  color:var(--gold);letter-spacing:.1em;cursor:pointer;
+  display:flex;align-items:center;gap:10px;
+}
+.nav-sep{width:1px;height:16px;background:var(--border);display:inline-block;}
+.nav-links{display:flex;align-items:center;gap:36px;}
+.nav-link{
+  font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--white-dim);cursor:pointer;background:none;border:none;
+  font-family:'Jost',sans-serif;font-weight:200;padding:0;
+  transition:color .3s;
+}
+.nav-link:hover{color:var(--white);}
+.nav-link.active{color:var(--gold);}
+.nav-right{display:flex;align-items:center;gap:14px;}
+.btn-ghost{
+  font-family:'Jost',sans-serif;font-weight:200;font-size:10px;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--white-dim);
+  background:none;border:1px solid var(--border-light);padding:8px 20px;
+  cursor:pointer;transition:all .3s;
+}
+.btn-ghost:hover{color:var(--white);border-color:rgba(242,237,227,.18);}
+.btn-gold{
+  font-family:'Jost',sans-serif;font-weight:300;font-size:10px;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--black);
+  background:var(--gold);border:none;padding:8px 20px;cursor:pointer;
+  transition:background .3s;
+}
+.btn-gold:hover{background:var(--gold-l);}
+.nav-user{display:none;align-items:center;gap:10px;cursor:pointer;}
+.nav-user.show{display:flex;}
+.nav-avatar{
+  width:30px;height:30px;border-radius:50%;
+  background:var(--gold-dim);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--gold);
+}
+.nav-uname{font-size:10px;letter-spacing:.18em;color:var(--white-dim);}
 
-    /* HERO */
-    .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; padding-top: 5rem; }
-    .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 6rem 3rem; }
-    .hero-tag { display: inline-flex; align-items: center; gap: .5rem; font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); margin-bottom: 2rem; }
-    .hero-tag::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
-    .hero-title { font-family: var(--font-d); font-size: clamp(4rem,8vw,8rem); line-height: .92; letter-spacing: .02em; margin-bottom: 2rem; }
-    .hero-title span { color: var(--accent); }
-    .hero-desc { font-size: 1.05rem; line-height: 1.7; color: #aaa; max-width: 440px; margin-bottom: 3rem; }
-    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .85rem 2rem; font-family: var(--font-b); font-size: .82rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: all .2s; border-radius: 2px; }
-    .btn-primary { background: var(--accent); color: var(--bg); }
-    .btn-primary:hover { background: #fff; transform: translateY(-2px); }
-    .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
-    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
-    .hero-right { position: relative; overflow: hidden; border-left: 1px solid var(--border); }
-    .hero-visual { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
-    .hero-blob { width: 380px; height: 380px; border-radius: 50%; background: radial-gradient(circle at 40% 40%, rgba(232,255,71,.15), rgba(255,107,53,.08) 50%, transparent 70%); animation: pulse 4s ease-in-out infinite; }
-    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
-    .hero-stats { position: absolute; bottom: 3rem; right: 3rem; display: flex; flex-direction: column; gap: 1.5rem; }
-    .stat { text-align: right; }
-    .stat-num { font-family: var(--font-d); font-size: 2.5rem; color: var(--accent); line-height: 1; }
-    .stat-label { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+/* PAGES */
+.page{display:none;padding-top:68px;min-height:100vh;position:relative;z-index:1;}
+.page.active{display:block;}
 
-    /* MARQUEE */
-    .marquee-wrap { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; padding: 1rem 0; background: var(--surface); }
-    .marquee-track { display: flex; gap: 3rem; white-space: nowrap; animation: marquee 18s linear infinite; width: max-content; }
-    .marquee-track span { font-family: var(--font-d); font-size: 1.1rem; letter-spacing: .12em; color: var(--muted); }
-    .marquee-track span.ac { color: var(--accent); }
-    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+/* HOME HERO */
+.hero{
+  min-height:calc(100vh - 68px);
+  display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+  padding:0 10vw;position:relative;overflow:hidden;
+}
+.hero-line{
+  position:absolute;top:0;right:20vw;bottom:0;width:1px;
+  background:linear-gradient(to bottom,transparent 0%,var(--border) 30%,var(--border) 70%,transparent);
+  pointer-events:none;
+}
+.hero-line2{right:38vw;opacity:.35;}
+.hero-tag{
+  font-size:9px;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:26px;display:flex;align-items:center;gap:14px;
+  animation:frRight .9s .1s both;
+}
+.hero-tag::before{content:'';width:28px;height:1px;background:var(--gold);}
+.hero-h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(52px,7vw,96px);font-weight:300;line-height:1.0;
+  letter-spacing:-.01em;max-width:680px;
+  animation:frRight .9s .2s both;
+}
+.hero-h1 em{color:var(--gold);font-style:italic;}
+.hero-p{
+  margin-top:28px;max-width:380px;font-size:13px;line-height:1.85;
+  color:var(--white-dim);animation:frRight .9s .35s both;
+}
+.hero-cta{
+  margin-top:48px;display:flex;gap:14px;
+  animation:frRight .9s .5s both;
+}
+.hero-scroll{
+  position:absolute;bottom:44px;left:10vw;
+  font-size:8px;letter-spacing:.4em;text-transform:uppercase;color:var(--gray);
+  display:flex;align-items:center;gap:12px;
+  animation:fadeIn 1s 1.2s both;
+}
+.hero-scroll::after{content:'';width:44px;height:1px;background:var(--gray);}
 
-    /* SECTIONS */
-    section { padding: 7rem 3rem; max-width: 1200px; margin: 0 auto; }
-    .section-tag { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
-    .section-tag::before { content: ''; width: 20px; height: 1px; background: var(--accent); }
-    .section-title { font-family: var(--font-d); font-size: clamp(2.5rem,5vw,4.5rem); line-height: 1; letter-spacing: .02em; margin-bottom: 4rem; }
+/* STATS */
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--border-light);border-bottom:1px solid var(--border-light);
+}
+.stat{
+  padding:52px 36px;border-right:1px solid var(--border-light);text-align:center;
+}
+.stat:last-child{border-right:none;}
+.stat-n{
+  font-family:'Cormorant Garamond',serif;font-size:50px;font-weight:300;
+  color:var(--gold);line-height:1;
+}
+.stat-l{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--gray);margin-top:10px;}
 
-    /* SERVICES */
-    .services-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
-    .service-card { background: var(--bg); padding: 2.5rem; transition: background .2s; }
-    .service-card:hover { background: var(--surface); }
-    .service-icon { font-size: 2rem; margin-bottom: 1.5rem; display: block; }
-    .service-name { font-family: var(--font-d); font-size: 1.6rem; letter-spacing: .03em; margin-bottom: .75rem; }
-    .service-desc { font-size: .9rem; line-height: 1.7; color: #888; }
-    .service-price { margin-top: 1.5rem; font-family: var(--font-d); font-size: 1.2rem; color: var(--accent); }
+/* SERVICES */
+.section{padding:110px 10vw;}
+.section-eye{
+  font-size:9px;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:18px;display:flex;align-items:center;gap:14px;
+}
+.section-eye::before{content:'';width:22px;height:1px;background:var(--gold);}
+.section-h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(34px,4vw,54px);font-weight:300;line-height:1.1;
+  max-width:480px;margin-bottom:60px;
+}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.svc-card{
+  background:var(--card);border:1px solid var(--border-light);
+  padding:44px 36px;position:relative;overflow:hidden;
+  transition:background .4s,border-color .4s;
+}
+.svc-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(to right,transparent,var(--gold),transparent);
+  transform:scaleX(0);transition:transform .5s;
+}
+.svc-card:hover{background:var(--deep);border-color:var(--border);}
+.svc-card:hover::before{transform:scaleX(1);}
+.svc-n{font-family:'Cormorant Garamond',serif;font-size:11px;color:var(--gold);letter-spacing:.2em;margin-bottom:24px;}
+.svc-ico{font-size:22px;margin-bottom:18px;opacity:.7;}
+.svc-title{font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:14px;}
+.svc-text{font-size:12px;line-height:1.85;color:var(--white-dim);}
 
-    /* ABOUT */
-    .about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 6rem; align-items: center; }
-    .about-text p { font-size: 1rem; line-height: 1.8; color: #aaa; margin-bottom: 1.5rem; }
-    .skills-list { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 2rem; }
-    .skill-tag { font-size: .72rem; letter-spacing: .08em; padding: .35rem .85rem; border: 1px solid var(--border); color: var(--muted); text-transform: uppercase; transition: all .2s; }
-    .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
-    .about-card { background: var(--surface); border: 1px solid var(--border); padding: 2.5rem; }
-    .about-card-title { font-family: var(--font-d); font-size: 1.1rem; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; margin-bottom: 2rem; }
-    .timeline-item { display: flex; gap: 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
-    .timeline-item:last-child { border: none; }
-    .timeline-year { font-family: var(--font-d); font-size: 1rem; color: var(--accent); min-width: 50px; }
-    .timeline-info h4 { font-size: .9rem; font-weight: 500; margin-bottom: .25rem; }
-    .timeline-info p { font-size: .8rem; color: var(--muted); }
+/* ABOUT */
+.about-wrap{
+  padding:90px 10vw 80px;
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+}
+.about-photo{
+  aspect-ratio:3/4;max-width:380px;
+  background:var(--card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+}
+.about-photo-ph{font-family:'Cormorant Garamond',serif;font-size:96px;color:var(--gold);opacity:.12;font-style:italic;}
+.about-photo::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:38%;
+  background:linear-gradient(to top,var(--black),transparent);
+}
+.about-eye{font-size:9px;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:14px;}
+.about-eye::before{content:'';width:22px;height:1px;background:var(--gold);}
+.about-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,4vw,58px);font-weight:300;line-height:1.1;margin-bottom:26px;}
+.about-p{font-size:13px;line-height:1.9;color:var(--white-dim);margin-bottom:18px;}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;}
+.tag{
+  font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--border);padding:6px 14px;
+}
+.timeline-wrap{padding:72px 10vw;border-top:1px solid var(--border-light);}
+.tl-item{
+  display:grid;grid-template-columns:100px 1px 1fr;gap:28px;
+  align-items:start;margin-bottom:44px;
+}
+.tl-year{font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--gold);opacity:.45;text-align:right;padding-top:2px;}
+.tl-bar{background:var(--border);align-self:stretch;min-height:80px;}
+.tl-title{font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:8px;}
+.tl-desc{font-size:12px;line-height:1.85;color:var(--white-dim);}
 
-    /* CONTACT */
-    .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
-    .contact-info p { font-size: 1rem; line-height: 1.8; color: #aaa; margin-bottom: 2rem; }
-    .contact-link { display: flex; align-items: center; gap: 1rem; color: var(--muted); text-decoration: none; font-size: .9rem; transition: color .2s; padding: .75rem 0; border-bottom: 1px solid var(--border); }
-    .contact-link:hover { color: var(--accent); }
-    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
-    .form-group { display: flex; flex-direction: column; gap: .4rem; }
-    .form-group label { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-    .form-group input, .form-group textarea { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: .85rem 1rem; font-family: var(--font-b); font-size: .95rem; outline: none; transition: border-color .2s; border-radius: 2px; resize: none; }
-    .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
-    #form-status { font-size: .85rem; color: var(--accent); min-height: 1.2em; }
+/* DASHBOARD */
+.dash{padding:56px 10vw 100px;}
+.dash-hd{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:52px;padding-bottom:28px;border-bottom:1px solid var(--border-light);
+}
+.dash-greet{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;}
+.dash-greet span{color:var(--gold);font-style:italic;}
+.dash-date{font-size:10px;letter-spacing:.18em;color:var(--gray);margin-top:6px;}
+.logout-btn{
+  font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--gray);
+  cursor:pointer;background:none;border:none;font-family:'Jost',sans-serif;
+  font-weight:200;transition:color .3s;padding:0;margin-top:6px;display:block;
+}
+.logout-btn:hover{color:var(--gold);}
+.dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:2px;}
+.d-card{
+  background:var(--card);border:1px solid var(--border-light);
+  padding:34px;position:relative;overflow:hidden;
+}
+.d-card-acnt{
+  position:absolute;top:0;right:0;width:80px;height:80px;
+  background:radial-gradient(circle at top right,var(--gold-dim),transparent 70%);
+}
+.d-label{font-size:8px;letter-spacing:.35em;text-transform:uppercase;color:var(--gray);margin-bottom:14px;}
+.d-val{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;line-height:1;}
+.d-val.gold{color:var(--gold);}
+.d-sub{font-size:11px;color:var(--gray);margin-top:10px;}
 
-    /* FOOTER */
-    footer { border-top: 1px solid var(--border); padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; }
-    footer p { font-size: .8rem; color: var(--muted); }
-    .footer-logo { font-family: var(--font-d); font-size: 1.2rem; color: var(--accent); letter-spacing: .1em; }
+/* ORDERS */
+.orders-wrap{background:var(--card);border:1px solid var(--border-light);}
+.orders-hd{
+  padding:26px 34px;border-bottom:1px solid var(--border-light);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.orders-ttl{font-size:9px;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);}
+.orders-cnt{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gray);}
+.o-row{
+  display:grid;grid-template-columns:56px 1fr 120px 110px 96px;
+  align-items:center;gap:20px;padding:18px 34px;
+  border-bottom:1px solid var(--border-light);transition:background .2s;
+}
+.o-row:last-child{border-bottom:none;}
+.o-row:hover{background:var(--white-faint);}
+.o-id{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);opacity:.65;}
+.o-name{font-size:13px;}
+.o-date{font-size:11px;color:var(--gray);}
+.o-amt{font-family:'Cormorant Garamond',serif;font-size:18px;text-align:right;}
+.o-status{font-size:8px;letter-spacing:.18em;text-transform:uppercase;padding:5px 10px;text-align:center;}
+.s-done{color:#7eba8a;background:rgba(126,186,138,.07);border:1px solid rgba(126,186,138,.2);}
+.s-pend{color:var(--gold);background:var(--gold-faint);border:1px solid var(--border);}
+.s-cancel{color:#c07070;background:rgba(192,112,112,.06);border:1px solid rgba(192,112,112,.15);}
 
-    /* TOAST */
-    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: .75rem 1.5rem; font-size: .85rem; z-index: 9000; transition: transform .35s, opacity .35s; opacity: 0; border-radius: 2px; white-space: nowrap; }
-    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-    .toast.success { border-color: var(--green); color: var(--green); }
-    .toast.error { border-color: var(--red); color: var(--red); }
+/* PROFILE */
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:2px;}
+.p-card{background:var(--card);border:1px solid var(--border-light);padding:34px;}
+.p-card-ttl{font-size:9px;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:26px;}
+.p-field{margin-bottom:18px;}
+.p-field label{display:block;font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--gray);margin-bottom:5px;}
+.p-fval{font-size:13px;padding:9px 0;border-bottom:1px solid var(--border-light);}
+.plan-badge{display:inline-block;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);border:1px solid var(--border);padding:5px 14px;margin-bottom:10px;}
+.plan-name{font-family:'Cormorant Garamond',serif;font-size:30px;margin-bottom:8px;}
+.plan-desc{font-size:12px;color:var(--white-dim);line-height:1.85;}
 
-    /* MODAL */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.82); backdrop-filter: blur(10px); z-index: 1000; display: none; align-items: center; justify-content: center; }
-    .modal-overlay.active { display: flex; }
-    .modal { background: var(--surface); border: 1px solid var(--border); width: 100%; max-width: 420px; padding: 2.5rem; position: relative; }
-    .modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--muted); font-size: 1.5rem; cursor: pointer; transition: color .2s; }
-    .modal-close:hover { color: var(--text); }
-    .modal-tabs { display: flex; margin-bottom: 2rem; border-bottom: 1px solid var(--border); }
-    .modal-tab { padding: .75rem 1.5rem; background: none; border: none; font-family: var(--font-b); font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all .2s; }
-    .modal-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-    .modal-title { font-family: var(--font-d); font-size: 2rem; letter-spacing: .04em; margin-bottom: 1.5rem; }
-    .modal-form { display: none; flex-direction: column; gap: 1rem; }
-    .modal-form.active { display: flex; }
-    .modal-msg { font-size: .82rem; min-height: 1.2em; }
-    .modal-msg.ok { color: var(--green); }
-    .modal-msg.err { color: var(--red); }
+/* MODAL */
+.modal-ov{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(8,8,7,.92);backdrop-filter:blur(16px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .4s;
+}
+.modal-ov.open{opacity:1;pointer-events:all;}
+.modal{
+  width:100%;max-width:410px;background:var(--deep);
+  border:1px solid var(--border);position:relative;
+  transform:translateY(22px);transition:transform .4s;
+  padding:50px 42px;
+}
+.modal-ov.open .modal{transform:translateY(0);}
+.modal-top{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
+.modal-x{position:absolute;top:18px;right:22px;background:none;border:none;color:var(--gray);font-size:18px;cursor:pointer;transition:color .2s;line-height:1;font-weight:100;}
+.modal-x:hover{color:var(--white);}
+.modal-brand{font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--gold);letter-spacing:.18em;margin-bottom:28px;}
+.modal-tabs{display:flex;margin-bottom:28px;border-bottom:1px solid var(--border-light);}
+.modal-tab{
+  flex:1;background:none;border:none;cursor:pointer;
+  font-family:'Jost',sans-serif;font-weight:200;font-size:10px;
+  letter-spacing:.25em;text-transform:uppercase;color:var(--gray);
+  padding:0 0 13px;position:relative;transition:color .3s;
+}
+.modal-tab.active{color:var(--gold);}
+.modal-tab::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transition:transform .3s;}
+.modal-tab.active::after{transform:scaleX(1);}
+.mform{display:none;}
+.mform.active{display:block;animation:fadeIn .3s both;}
+.mf{margin-bottom:18px;}
+.mf label{display:block;font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--gray);margin-bottom:7px;}
+.mf input{
+  width:100%;background:rgba(255,255,255,.02);border:none;
+  border-bottom:1px solid rgba(197,162,74,.2);color:var(--white);
+  font-family:'Jost',sans-serif;font-weight:200;font-size:14px;
+  padding:10px 0;outline:none;transition:border-color .3s;
+  letter-spacing:.02em;border-radius:0;-webkit-appearance:none;
+}
+.mf input:focus{border-bottom-color:var(--gold);}
+.mf input::placeholder{color:rgba(242,237,227,.2);font-size:13px;}
+.mf input:-webkit-autofill{-webkit-box-shadow:0 0 0 30px var(--deep) inset;-webkit-text-fill-color:var(--white);}
+.mmsg{font-size:11px;padding:9px 13px;margin-bottom:16px;border-left:2px solid;display:none;}
+.mmsg.show{display:block;animation:fadeIn .3s;}
+.mmsg.err{color:#e07070;border-color:#e07070;background:rgba(224,112,112,.05);}
+.mmsg.ok{color:var(--gold-l);border-color:var(--gold);background:var(--gold-faint);}
+.m-btn{
+  width:100%;background:transparent;border:1px solid var(--gold);
+  color:var(--gold);font-family:'Jost',sans-serif;font-weight:200;
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;
+  padding:14px;cursor:pointer;position:relative;overflow:hidden;
+  transition:color .35s;margin-top:6px;
+}
+.m-btn::before{content:'';position:absolute;inset:0;background:var(--gold);transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);}
+.m-btn:hover::before{transform:translateY(0);}
+.m-btn:hover{color:var(--black);}
+.m-btn span{position:relative;z-index:1;}
+.m-btn:disabled{opacity:.4;cursor:not-allowed;}
+.m-btn:disabled::before{display:none;}
 
-    /* CABINET */
-    .cabinet-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(8px); z-index: 900; display: none; align-items: flex-start; justify-content: flex-end; }
-    .cabinet-overlay.active { display: flex; }
-    .cabinet { width: 440px; height: 100vh; background: var(--surface); border-left: 1px solid var(--border); padding: 2rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1.5rem; animation: slideIn .3s ease; }
-    @keyframes slideIn { from{transform:translateX(100%)} to{transform:translateX(0)} }
-    .cabinet-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
-    .cabinet-title { font-family: var(--font-d); font-size: 1.8rem; letter-spacing: .04em; }
-    .cabinet-close { background: none; border: none; color: var(--muted); font-size: 1.5rem; cursor: pointer; transition: color .2s; }
-    .cabinet-close:hover { color: var(--text); }
-    .cab-card { background: var(--bg); border: 1px solid var(--border); padding: 1.5rem; }
-    .cab-card-title { font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-bottom: .75rem; }
-    .cab-user-email { font-size: 1rem; font-weight: 500; margin-bottom: .25rem; }
-    .cab-user-id { font-size: .75rem; color: var(--muted); }
-    .cab-balance { font-family: var(--font-d); font-size: 2.5rem; color: var(--accent); line-height: 1; }
-    .cab-balance-sub { font-size: .75rem; color: var(--muted); margin-top: .25rem; letter-spacing: .08em; text-transform: uppercase; }
-    .orders-empty { text-align: center; padding: 2rem 0; color: var(--muted); font-size: .9rem; }
-    .orders-empty .emoji { font-size: 2rem; display: block; margin-bottom: .75rem; }
-    .order-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 1rem 0; border-bottom: 1px solid var(--border); }
-    .order-item:last-child { border: none; }
-    .order-name { font-size: .9rem; font-weight: 500; margin-bottom: .25rem; }
-    .order-date { font-size: .75rem; color: var(--muted); }
-    .order-status { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; padding: .25rem .6rem; border-radius: 2px; }
-    .order-status.done { background: rgba(79,255,176,.12); color: var(--green); border: 1px solid rgba(79,255,176,.3); }
-    .order-status.pending { background: rgba(232,255,71,.1); color: var(--accent); border: 1px solid rgba(232,255,71,.3); }
-    .order-price { font-family: var(--font-d); font-size: 1.1rem; margin-top: .3rem; }
-    .cab-actions { display: flex; flex-direction: column; gap: .75rem; margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border); }
-    .cab-btn { width: 100%; padding: .75rem; font-family: var(--font-b); font-size: .82rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: all .2s; border-radius: 2px; }
-    .cab-btn-outline { background: transparent; color: var(--muted); border: 1px solid var(--border); }
-    .cab-btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-    .cab-btn-danger { background: transparent; color: var(--muted); border: 1px solid var(--border); }
-    .cab-btn-danger:hover { border-color: var(--red); color: var(--red); }
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border-light);padding:44px 10vw;
+  display:flex;justify-content:space-between;align-items:center;
+  position:relative;z-index:1;
+}
+.f-brand{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--gold);letter-spacing:.12em;}
+.f-links{display:flex;gap:26px;}
+.f-link{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--gray);cursor:pointer;background:none;border:none;font-family:'Jost',sans-serif;font-weight:200;transition:color .3s;padding:0;}
+.f-link:hover{color:var(--gold);}
+.f-copy{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gray);}
 
-    /* FADE IN */
-    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
+/* SPINNER */
+.spin{display:inline-block;width:12px;height:12px;border:1px solid rgba(197,162,74,.3);border-top-color:var(--gold);border-radius:50%;animation:spinA .7s linear infinite;vertical-align:middle;margin-right:8px;}
 
-    @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
-      .nav-links { display: none; }
-      .hero { grid-template-columns: 1fr; }
-      .hero-right { display: none; }
-      section { padding: 5rem 1.5rem; }
-      .about-grid, .contact-wrap { grid-template-columns: 1fr; gap: 3rem; }
-      footer { flex-direction: column; gap: 1rem; text-align: center; }
-      .cabinet { width: 100%; }
-    }
-  </style>
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+
+/* ANIMS */
+@keyframes frRight{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes spinA{to{transform:rotate(360deg)}}
+
+/* RESPONSIVE */
+@media(max-width:860px){
+  nav{padding:0 20px;}
+  .nav-links{display:none;}
+  .hero,.section,.dash,.about-wrap,.timeline-wrap{padding-left:5vw;padding-right:5vw;}
+  .svc-grid,.stats{grid-template-columns:1fr 1fr;}
+  .dash-grid{grid-template-columns:1fr 1fr;}
+  .about-wrap{grid-template-columns:1fr;gap:40px;}
+  .profile-grid{grid-template-columns:1fr;}
+  .o-row{grid-template-columns:46px 1fr 80px;gap:10px;}
+  .o-date,.o-amt{display:none;}
+  footer{flex-direction:column;gap:18px;text-align:center;}
+}
+</style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav id="navbar">
-  <a href="#" class="nav-logo">EDVARD</a>
-  <ul class="nav-links">
-    <li><a href="#services">Услуги</a></li>
-    <li><a href="#about">Обо мне</a></li>
-    <li><a href="#contact">Контакты</a></li>
-    <li><a href="#" id="cabinetLink" style="display:none" onclick="openCabinet(); return false;">Кабинет</a></li>
-    <li>
-      <div class="user-badge" id="userBadge">
-        <span id="usernameDisplay"></span>
-        <button class="btn-logout" onclick="logout()">Выйти</button>
-      </div>
-      <a href="#" class="nav-cta" id="loginBtn" onclick="openModal(); return false;">Войти</a>
-    </li>
-  </ul>
+<nav>
+  <div class="nav-logo" onclick="go('home')">E <span class="nav-sep"></span> Web Hub</div>
+  <div class="nav-links">
+    <button class="nav-link active" id="nl-home" onclick="go('home')">Главная</button>
+    <button class="nav-link" id="nl-about" onclick="go('about')">Обо мне</button>
+    <button class="nav-link" id="nl-dash" onclick="go('dashboard')" style="display:none">Кабинет</button>
+  </div>
+  <div class="nav-right">
+    <div id="nav-btns">
+      <button class="btn-ghost" onclick="openModal('login')">Войти</button>
+      <button class="btn-gold" style="margin-left:10px" onclick="openModal('register')">Регистрация</button>
+    </div>
+    <div class="nav-user" id="nav-user" onclick="go('dashboard')">
+      <div class="nav-avatar" id="nav-av">E</div>
+      <span class="nav-uname" id="nav-un"></span>
+    </div>
+  </div>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-left">
-    <div class="hero-tag">Доступен для проектов</div>
-    <h1 class="hero-title">Digital<br>Service<br><span>Hub.</span></h1>
-    <!-- ✏️ Меняй описание -->
-    <p class="hero-desc">Разрабатываю цифровые продукты, автоматизирую процессы и строю надёжные бэкенд-системы. Быстро, чисто, с характером.</p>
-    <div class="hero-actions">
-      <a href="#services" class="btn btn-primary">Смотреть услуги ↓</a>
-      <a href="#contact" class="btn btn-secondary">Связаться</a>
+<!-- ═══ HOME ═══ -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-line"></div>
+    <div class="hero-line hero-line2"></div>
+    <div class="hero-tag">Добро пожаловать</div>
+    <h1 class="hero-h1">Платформа для<br><em>ваших идей</em><br>и проектов</h1>
+    <p class="hero-p">Воплотите ваши желания в явь</p>
+    <div class="hero-cta">
+      <button class="btn-gold" style="padding:13px 34px;font-size:10px;" onclick="openModal('register')">Начать</button>
+      <button class="btn-ghost" style="padding:13px 26px;font-size:10px;" onclick="go('about')">Обо мне</button>
+    </div>
+    <div class="hero-scroll">Листайте вниз</div>
+  </section>
+
+  <div class="stats">
+    <div class="stat reveal"><div class="stat-n">Стоимость?<span style="font-size:26px;color:var(--white-dim)"></span></div><div class="stat-l">Исходя из ваших пожеланий</div></div>
+    <div class="stat reveal" style="transition-delay:.1s"><div class="stat-n">99%</div><div class="stat-l">Клиентов остались довольны моей работой</div></div>
+    <div class="stat reveal" style="transition-delay:.2s"><div class="stat-n">Неделя<span style="font-size:22px;color:var(--white-dim)"></span></div><div class="stat-l">Среднее время выполнения заказа</div></div>
+    <div class="stat reveal" style="transition-delay:.3s"><div class="stat-n">∞</div><div class="stat-l">Возможностей</div></div>
+  </div>
+
+  <section class="section">
+    <div class="section-eye reveal">Возможности</div>
+    <h2 class="section-h2 reveal" style="transition-delay:.1s">Что предлагает платформа</h2>
+    <div class="svc-grid">
+      <div class="svc-card reveal">
+        <div class="svc-n">01</div>
+        <div class="svc-ico">⚡</div>
+        <div class="svc-title">Быстрый API</div>
+        <div class="svc-text">FastAPI-бэкенд с асинхронной обработкой запросов и минимальными задержками. Production-ready архитектура.</div>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.1s">
+        <div class="svc-n">02</div>
+        <div class="svc-ico">🔐</div>
+        <div class="svc-title">Безопасность</div>
+        <div class="svc-text">JWT access & refresh токены, хэширование Argon2, защита от несанкционированного доступа на каждом уровне.</div>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.2s">
+        <div class="svc-n">03</div>
+        <div class="svc-ico">🗄️</div>
+        <div class="svc-title">База данных</div>
+        <div class="svc-text">SQLAlchemy ORM с полноценными миграциями. Надёжное хранение пользователей, токенов и транзакций.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══ ABOUT ═══ -->
+<div class="page" id="page-about">
+  <div class="about-wrap">
+    <div class="about-photo">
+      <div class="about-photo-ph">E</div>
+    </div>
+    <div>
+      <div class="about-eye">Разработчик</div>
+      <h1 class="about-h1">Edvard<br>Kuryla</h1>
+      <p class="about-p">Full-stack разработчик, увлечённый созданием элегантных и производительных веб-приложений. Специализируюсь на Python-бэкенде и современных фронтенд-решениях.</p>
+      <p class="about-p">Edvard Web Hub — персональный проект, объединяющий лучшие практики: чистую архитектуру, безопасность и внимание к деталям интерфейса.</p>
+      <div class="tags">
+        <span class="tag">Python</span><span class="tag">FastAPI</span>
+        <span class="tag">SQLAlchemy</span><span class="tag">JWT</span>
+        <span class="tag">Frontend</span><span class="tag">REST API</span>
+      </div>
     </div>
   </div>
-  <div class="hero-right">
-    <div class="hero-visual">
-      <div class="hero-blob"></div>
-      <div class="hero-stats">
-        <!-- ✏️ Меняй цифры -->
-        <div class="stat"><div class="stat-num">12+</div><div class="stat-label">Проектов</div></div>
-        <div class="stat"><div class="stat-num">3+</div><div class="stat-label">Года опыта</div></div>
-        <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Open Source</div></div>
-      </div>
+  <div class="timeline-wrap">
+    <div class="section-eye reveal" style="margin-bottom:44px">Опыт</div>
+    <div class="tl-item reveal">
+      <div class="tl-year">2024</div>
+      <div class="tl-bar"></div>
+      <div><div class="tl-title">Edvard Web Hub</div><div class="tl-desc">Разработка полноценной платформы с аутентификацией, токен-системой и личным кабинетом.</div></div>
+    </div>
+    <div class="tl-item reveal" style="transition-delay:.1s">
+      <div class="tl-year">2023</div>
+      <div class="tl-bar"></div>
+      <div><div class="tl-title">Backend разработка</div><div class="tl-desc">Глубокое изучение FastAPI, SQLAlchemy, Pydantic. Построение RESTful API с продуманной архитектурой.</div></div>
+    </div>
+    <div class="tl-item reveal" style="transition-delay:.2s">
+      <div class="tl-year">2022</div>
+      <div class="tl-bar"></div>
+      <div><div class="tl-title">Начало пути</div><div class="tl-desc">Первые проекты на Python. Изучение основ веб-разработки, баз данных и алгоритмов.</div></div>
     </div>
   </div>
 </div>
 
-<!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee-track">
-    <span>FastAPI</span><span class="ac">✦</span><span>PostgreSQL</span><span class="ac">✦</span>
-    <span>Python</span><span class="ac">✦</span><span>JWT Auth</span><span class="ac">✦</span>
-    <span>REST API</span><span class="ac">✦</span><span>SQLAlchemy</span><span class="ac">✦</span>
-    <span>Docker</span><span class="ac">✦</span><span>Alembic</span><span class="ac">✦</span>
-    <span>FastAPI</span><span class="ac">✦</span><span>PostgreSQL</span><span class="ac">✦</span>
-    <span>Python</span><span class="ac">✦</span><span>JWT Auth</span><span class="ac">✦</span>
-    <span>REST API</span><span class="ac">✦</span><span>SQLAlchemy</span><span class="ac">✦</span>
-    <span>Docker</span><span class="ac">✦</span><span>Alembic</span><span class="ac">✦</span>
-  </div>
-</div>
-
-<!-- SERVICES -->
-<section id="services">
-  <div class="section-tag fade-in">Что я делаю</div>
-  <h2 class="section-title fade-in">Услуги</h2>
-  <div class="services-grid">
-    <!-- ✏️ Копируй/удаляй карточки, меняй иконку, название, описание, цену -->
-    <div class="service-card fade-in">
-      <span class="service-icon">⚡</span>
-      <div class="service-name">API Разработка</div>
-      <p class="service-desc">Проектирую и разрабатываю REST API на FastAPI с аутентификацией, документацией и чистой архитектурой.</p>
-      <div class="service-price">от $200</div>
-    </div>
-    <div class="service-card fade-in">
-      <span class="service-icon">🗄️</span>
-      <div class="service-name">Базы данных</div>
-      <p class="service-desc">Проектирование схем PostgreSQL, оптимизация запросов, миграции через Alembic и настройка ORM.</p>
-      <div class="service-price">от $150</div>
-    </div>
-    <div class="service-card fade-in">
-      <span class="service-icon">🔐</span>
-      <div class="service-name">Аутентификация</div>
-      <p class="service-desc">JWT-авторизация, хэширование паролей Argon2, управление сессиями, refresh-токены и роли.</p>
-      <div class="service-price">от $100</div>
-    </div>
-    <div class="service-card fade-in">
-      <span class="service-icon">🚀</span>
-      <div class="service-name">Деплой & DevOps</div>
-      <p class="service-desc">CI/CD пайплайны, контейнеризация через Docker и деплой на облачные платформы.</p>
-      <div class="service-price">от $120</div>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about" style="border-top:1px solid var(--border)">
-  <div class="section-tag fade-in">Знакомство</div>
-  <h2 class="section-title fade-in">Обо мне</h2>
-  <div class="about-grid">
-    <div class="about-text fade-in">
-      <!-- ✏️ Меняй тексты -->
-      <p>Привет! Я Эдвард — backend-разработчик и создатель этого цифрового хаба. Специализируюсь на построении надёжных API-сервисов и цифровых платформ с нуля.</p>
-      <p>Работаю с Python-экосистемой: FastAPI, SQLAlchemy, PostgreSQL. Ценю чистый код, хорошую архитектуру и документацию, которую не стыдно показать.</p>
-      <div class="skills-list">
-        <!-- ✏️ Добавляй/удаляй теги -->
-        <span class="skill-tag">Python</span><span class="skill-tag">FastAPI</span>
-        <span class="skill-tag">PostgreSQL</span><span class="skill-tag">SQLAlchemy</span>
-        <span class="skill-tag">Docker</span><span class="skill-tag">JWT</span>
-        <span class="skill-tag">Alembic</span><span class="skill-tag">Git</span><span class="skill-tag">REST API</span>
-      </div>
-    </div>
-    <div class="about-visual fade-in">
-      <div class="about-card">
-        <div class="about-card-title">Опыт</div>
-        <!-- ✏️ Меняй года и описания -->
-        <div class="timeline-item">
-          <div class="timeline-year">2024</div>
-          <div class="timeline-info"><h4>Backend Developer</h4><p>Фриланс · Личные проекты</p></div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-year">2023</div>
-          <div class="timeline-info"><h4>Python Developer</h4><p>Учёба · Первые коммерческие проекты</p></div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-year">2022</div>
-          <div class="timeline-info"><h4>Начало пути</h4><p>Изучение Python, SQL, алгоритмов</p></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact" style="border-top:1px solid var(--border)">
-  <div class="section-tag fade-in">Связь</div>
-  <h2 class="section-title fade-in">Напиши мне</h2>
-  <div class="contact-wrap">
-    <div class="contact-info fade-in">
-      <p>Готов обсудить твой проект, ответить на вопросы или просто поговорить о технологиях. Обычно отвечаю в течение нескольких часов.</p>
-      <!-- ✏️ Замени ссылки и контакты на свои -->
+<!-- ═══ DASHBOARD ═══ -->
+<div class="page" id="page-dashboard">
+  <div class="dash">
+    <div class="dash-hd">
       <div>
-        <a href="https://github.com/edvardkuryla" class="contact-link" target="_blank"><span>⌥</span><span>github.com/edvardkuryla</span></a>
-        <a href="mailto:your@email.com" class="contact-link"><span>✉</span><span>your@email.com</span></a>
-        <a href="https://t.me/yourusername" class="contact-link" target="_blank"><span>✈</span><span>@yourtelegram</span></a>
+        <div class="dash-greet">Добро пожаловать, <span id="dash-name">Пользователь</span></div>
+        <div class="dash-date" id="dash-date"></div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">— Выйти из аккаунта</button>
+    </div>
+
+    <div class="dash-grid">
+      <div class="d-card">
+        <div class="d-card-acnt"></div>
+        <div class="d-label">Баланс</div>
+        <div class="d-val gold">0 <span style="font-size:18px;color:var(--gray)">₽</span></div>
+        <div class="d-sub">Доступно для использования</div>
+        <button class="btn-gold" style="margin-top:18px;font-size:9px;padding:9px 18px;letter-spacing:.2em">Пополнить</button>
+      </div>
+      <div class="d-card">
+        <div class="d-label">Заказов всего</div>
+        <div class="d-val">3</div>
+        <div class="d-sub">За всё время</div>
+      </div>
+      <div class="d-card">
+        <div class="d-label">Статус аккаунта</div>
+        <div class="d-val" style="font-size:26px;padding-top:6px">Активен</div>
+        <div class="d-sub" style="color:var(--gold)">● Free план</div>
       </div>
     </div>
-    <div class="fade-in">
-      <form class="contact-form" onsubmit="handleContact(event)">
-        <div class="form-group"><label>Ваше имя</label><input type="text" id="c-name" placeholder="Иван Иванов" required /></div>
-        <div class="form-group"><label>Email</label><input type="email" id="c-email" placeholder="ivan@example.com" required /></div>
-        <div class="form-group"><label>Сообщение</label><textarea id="c-msg" rows="4" placeholder="Расскажи о проекте..." required></textarea></div>
-        <button type="submit" class="btn btn-primary">Отправить →</button>
-        <div id="form-status"></div>
-      </form>
+
+    <div class="orders-wrap" style="margin-top:2px">
+      <div class="orders-hd">
+        <span class="orders-ttl">История заказов</span>
+        <span class="orders-cnt">3 записи</span>
+      </div>
+      <div class="o-row">
+        <div class="o-id">#001</div>
+        <div class="o-name">Базовая подписка — 1 месяц</div>
+        <div class="o-date">12 янв. 2025</div>
+        <div class="o-amt">490 <span style="font-size:11px;color:var(--gray)">₽</span></div>
+        <div class="o-status s-done">Оплачен</div>
+      </div>
+      <div class="o-row">
+        <div class="o-id">#002</div>
+        <div class="o-name">Дополнительное хранилище</div>
+        <div class="o-date">28 янв. 2025</div>
+        <div class="o-amt">190 <span style="font-size:11px;color:var(--gray)">₽</span></div>
+        <div class="o-status s-pend">В обработке</div>
+      </div>
+      <div class="o-row">
+        <div class="o-id">#003</div>
+        <div class="o-name">Pro подписка — 3 месяца</div>
+        <div class="o-date">5 фев. 2025</div>
+        <div class="o-amt">1 200 <span style="font-size:11px;color:var(--gray)">₽</span></div>
+        <div class="o-status s-cancel">Отменён</div>
+      </div>
+    </div>
+
+    <div class="profile-grid">
+      <div class="p-card">
+        <div class="p-card-ttl">Профиль</div>
+        <div class="p-field"><label>Имя</label><div class="p-fval" id="p-name">—</div></div>
+        <div class="p-field"><label>Email</label><div class="p-fval" id="p-email">—</div></div>
+        <div class="p-field"><label>ID пользователя</label><div class="p-fval" id="p-id">—</div></div>
+        <div class="p-field">
+          <label>Access Token</label>
+          <div class="p-fval" style="font-size:10px;font-family:monospace;color:var(--gray);word-break:break-all;line-height:1.6" id="p-token">—</div>
+        </div>
+      </div>
+      <div class="p-card">
+        <div class="p-card-ttl">Подписка</div>
+        <div class="plan-badge">Текущий план</div>
+        <div class="plan-name">Free</div>
+        <div class="plan-desc">Базовый доступ к платформе. История заказов, управление профилем и токен-авторизация включены.</div>
+        <div style="margin-top:22px">
+          <button class="btn-gold" style="font-size:9px;padding:11px 26px;letter-spacing:.22em">Обновить до Pro</button>
+        </div>
+      </div>
     </div>
   </div>
-</section>
-
-<footer>
-  <span class="footer-logo">EDVARD</span>
-  <p>© 2025 Edvard's Digital Hub. Все права защищены.</p>
-  <p style="color:var(--border)">Built with FastAPI + ❤️</p>
-</footer>
-
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
+</div>
 
 <!-- AUTH MODAL -->
-<div class="modal-overlay" id="authModal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal()">×</button>
+<div class="modal-ov" id="modal-ov" onclick="closeOv(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-top"></div>
+    <button class="modal-x" onclick="closeModal()">✕</button>
+    <div class="modal-brand">Edvard Web Hub</div>
     <div class="modal-tabs">
-      <button class="modal-tab active" id="tab-login" onclick="switchTab('login')">Вход</button>
-      <button class="modal-tab" id="tab-register" onclick="switchTab('register')">Регистрация</button>
+      <button class="modal-tab active" id="mt-login" onclick="switchTab('login')">Войти</button>
+      <button class="modal-tab" id="mt-register" onclick="switchTab('register')">Регистрация</button>
+    </div>
+    <div id="mmsg" class="mmsg"></div>
+
+    <div class="mform active" id="mf-login">
+      <div class="mf"><label>Email</label><input type="email" id="l-email" placeholder="you@example.com" autocomplete="email"></div>
+      <div class="mf"><label>Пароль</label><input type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password"></div>
+      <button class="m-btn" id="l-btn" onclick="doLogin()"><span>Войти</span></button>
     </div>
 
-    <!--
-      ЛОГИН: использует OAuth2PasswordRequestForm
-      → form-urlencoded, поле "username" = email пользователя, "password" = пароль
-    -->
-    <form class="modal-form active" id="form-login" onsubmit="handleLogin(event)">
-      <div class="modal-title">Войти</div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="l-email" placeholder="you@example.com" required />
-      </div>
-      <div class="form-group">
-        <label>Пароль</label>
-        <input type="password" id="l-password" placeholder="••••••••" required />
-      </div>
-      <button type="submit" class="btn btn-primary" style="width:100%">Войти →</button>
-      <div class="modal-msg" id="login-msg"></div>
-    </form>
-
-    <!--
-      РЕГИСТРАЦИЯ: JSON body { name, email, password }
-      name >= 2 символа, password >= 8 символов  (валидация из UserCreate)
-    -->
-    <form class="modal-form" id="form-register" onsubmit="handleRegister(event)">
-      <div class="modal-title">Регистрация</div>
-      <div class="form-group">
-        <label>Имя (мин. 2 символа)</label>
-        <input type="text" id="r-name" placeholder="Иван" minlength="2" required />
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="r-email" placeholder="you@example.com" required />
-      </div>
-      <div class="form-group">
-        <label>Пароль (мин. 8 символов)</label>
-        <input type="password" id="r-password" placeholder="••••••••" minlength="8" required />
-      </div>
-      <button type="submit" class="btn btn-primary" style="width:100%">Создать аккаунт →</button>
-      <div class="modal-msg" id="register-msg"></div>
-    </form>
-  </div>
-</div>
-
-<!-- PERSONAL CABINET (slide-in панель) -->
-<div class="cabinet-overlay" id="cabinetOverlay">
-  <div class="cabinet">
-    <div class="cabinet-header">
-      <div class="cabinet-title">Кабинет</div>
-      <button class="cabinet-close" onclick="hideCabinet()">×</button>
-    </div>
-
-    <div class="cab-card">
-      <div class="cab-card-title">Профиль</div>
-      <div class="cab-user-email" id="cab-email">—</div>
-      <div class="cab-user-id" id="cab-id"></div>
-    </div>
-
-    <!--
-      Баланс — заглушка.
-      Когда реализуешь /users/balance на бекенде — раскомментируй в JS функцию refreshCabinet
-    -->
-    <div class="cab-card">
-      <div class="cab-card-title">Баланс</div>
-      <div class="cab-balance" id="cab-balance">$0.00</div>
-      <div class="cab-balance-sub">Доступно</div>
-    </div>
-
-    <!--
-      История заказов — заглушка.
-      Когда реализуешь /orders на бекенде — раскомментируй loadOrders() в JS
-    -->
-    <div class="cab-card" style="flex:1; min-height: 180px;">
-      <div class="cab-card-title">История заказов</div>
-      <div id="cab-orders">
-        <div class="orders-empty">
-          <span class="emoji">📋</span>
-          Заказов пока нет.<br>Выбери услугу и сделай первый!
-        </div>
-      </div>
-    </div>
-
-    <div class="cab-actions">
-      <button class="cab-btn cab-btn-outline" onclick="refreshCabinet()">↻ Обновить</button>
-      <button class="cab-btn cab-btn-danger" onclick="logout(); hideCabinet()">Выйти из аккаунта</button>
+    <div class="mform" id="mf-register">
+      <div class="mf"><label>Имя</label><input type="text" id="r-name" placeholder="Ваше имя" autocomplete="name"></div>
+      <div class="mf"><label>Email</label><input type="email" id="r-email" placeholder="you@example.com" autocomplete="email"></div>
+      <div class="mf"><label>Пароль</label><input type="password" id="r-pass" placeholder="Минимум 8 символов" autocomplete="new-password"></div>
+      <button class="m-btn" id="r-btn" onclick="doRegister()"><span>Создать аккаунт</span></button>
     </div>
   </div>
 </div>
+
+<!-- FOOTER -->
+<footer id="foot">
+  <div class="f-brand">E · Web Hub</div>
+  <div class="f-links">
+    <button class="f-link" onclick="go('home')">Главная</button>
+    <button class="f-link" onclick="go('about')">Обо мне</button>
+    <a class="f-link" href="https://github.com/edvardkuryla/edvard-web-hub" target="_blank">GitHub</a>
+  </div>
+  <div class="f-copy">© 2026 Edvard Kuryla</div>
+</footer>
 
 <script>
-// ════════════════════════════════════════════════════
-//  ⚙️ КОНФИГ
-// ════════════════════════════════════════════════════
-const API_BASE = 'http://127.0.0.1:8000'; // ← твой FastAPI сервер
+const API = ''; // e.g. 'http://127.0.0.1:8000'
 
-// ════════════════════════════════════════════════════
-//  TOAST
-// ════════════════════════════════════════════════════
-function showToast(text, type = '') {
-  const t = document.getElementById('toast');
-  t.textContent = text;
-  t.className = 'toast ' + type;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3200);
-}
-
-// ════════════════════════════════════════════════════
-//  ТОКЕНЫ — хранение в localStorage
-// ════════════════════════════════════════════════════
-const LS = {
-  setTokens(access, refresh) {
-    localStorage.setItem('access_token', access);
-    if (refresh) localStorage.setItem('refresh_token', refresh);
-  },
-  clear() {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user_data');
-  },
-  access: () => localStorage.getItem('access_token'),
-  refresh: () => localStorage.getItem('refresh_token'),
-  saveUser: (u) => localStorage.setItem('user_data', JSON.stringify(u)),
-  getUser() { try { return JSON.parse(localStorage.getItem('user_data')); } catch { return null; } }
+let S = {
+  token:   localStorage.getItem('access_token')  || null,
+  refresh: localStorage.getItem('refresh_token') || null,
+  user:    JSON.parse(localStorage.getItem('user_info') || 'null'),
 };
 
-// ════════════════════════════════════════════════════
-//  apiFetch — авто-рефреш access_token
-//
-//  Если запрос вернул 401 — пробуем POST /auth/refresh
-//  с телом { refresh_token: "..." }
-//  Если и он вернул ошибку — принудительный logout
-//
-//  ⚠️ Тебе нужно добавить /auth/refresh на бекенд!
-//  Пример эндпоинта — смотри раздел "Что нужно добавить" ниже
-// ════════════════════════════════════════════════════
-async function apiFetch(url, options = {}) {
-  options.headers = { ...(options.headers || {}), 'Authorization': 'Bearer ' + LS.access() };
-  let res = await fetch(API_BASE + url, options);
-
-  if (res.status === 401 && LS.refresh()) {
-    try {
-      const rRes = await fetch(`${API_BASE}/auth/refresh`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ refresh_token: LS.refresh() })
-      });
-      if (rRes.ok) {
-        const rData = await rRes.json();
-        LS.setTokens(rData.access_token, rData.refresh_token || LS.refresh());
-        options.headers['Authorization'] = 'Bearer ' + rData.access_token;
-        res = await fetch(API_BASE + url, options);
-      } else {
-        forceLogout('Сессия истекла — войдите снова');
-        return null;
-      }
-    } catch {
-      forceLogout('Ошибка соединения');
-      return null;
-    }
-  }
-  return res;
+/* ── NAV ── */
+function go(page) {
+  if (page === 'dashboard' && !S.token) { openModal('login'); return; }
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const nl = document.getElementById('nl-' + page);
+  if (nl) nl.classList.add('active');
+  document.getElementById('foot').style.display = page === 'dashboard' ? 'none' : '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (page === 'dashboard') renderDash();
+  observeReveal();
 }
 
-// ════════════════════════════════════════════════════
-//  AUTH STATE — проверяем при загрузке страницы
-// ════════════════════════════════════════════════════
-async function checkAuth() {
-  const badge = document.getElementById('userBadge');
-  const loginBtn = document.getElementById('loginBtn');
-  const cabinetLink = document.getElementById('cabinetLink');
-
-  if (!LS.access()) {
-    badge.classList.remove('visible');
-    loginBtn.style.display = '';
-    cabinetLink.style.display = 'none';
-    return;
-  }
-
-  const res = await apiFetch('/auth/me');
-  if (res && res.ok) {
-    const user = await res.json();
-    LS.saveUser(user);
-    document.getElementById('usernameDisplay').textContent = user.email;
-    badge.classList.add('visible');
-    loginBtn.style.display = 'none';
-    cabinetLink.style.display = '';
-  } else {
-    LS.clear();
-    badge.classList.remove('visible');
-    loginBtn.style.display = '';
-    cabinetLink.style.display = 'none';
-  }
+/* ── MODAL ── */
+function openModal(tab) {
+  document.getElementById('modal-ov').classList.add('open');
+  switchTab(tab || 'login');
+  clearMsg();
 }
-
-function logout() {
-  LS.clear();
-  hideCabinet();
-  checkAuth();
-  showToast('Вы вышли из аккаунта');
-}
-
-function forceLogout(msg) {
-  LS.clear();
-  hideCabinet();
-  document.getElementById('userBadge').classList.remove('visible');
-  document.getElementById('loginBtn').style.display = '';
-  document.getElementById('cabinetLink').style.display = 'none';
-  showToast(msg, 'error');
-}
-
-checkAuth();
-
-// ════════════════════════════════════════════════════
-//  NAV SCROLL
-// ════════════════════════════════════════════════════
-window.addEventListener('scroll', () => {
-  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
-});
-
-// ════════════════════════════════════════════════════
-//  FADE IN ON SCROLL
-// ════════════════════════════════════════════════════
-const obs = new IntersectionObserver((entries) => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('visible'), i * 80);
-      obs.unobserve(e.target);
-    }
+function closeModal() { document.getElementById('modal-ov').classList.remove('open'); }
+function closeOv(e)   { if (e.target === document.getElementById('modal-ov')) closeModal(); }
+function switchTab(t) {
+  ['login','register'].forEach(x => {
+    document.getElementById('mt-'+x).classList.toggle('active', x===t);
+    document.getElementById('mf-'+x).classList.toggle('active', x===t);
   });
-}, { threshold: 0.12 });
-document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
-
-// ════════════════════════════════════════════════════
-//  AUTH MODAL
-// ════════════════════════════════════════════════════
-function openModal() {
-  document.getElementById('authModal').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-function closeModal() {
-  document.getElementById('authModal').classList.remove('active');
-  document.body.style.overflow = '';
-}
-document.getElementById('authModal').addEventListener('click', (e) => {
-  if (e.target === e.currentTarget) closeModal();
-});
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') { closeModal(); hideCabinet(); }
-});
-
-function switchTab(tab) {
-  document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.modal-form').forEach(f => f.classList.remove('active'));
-  document.getElementById('tab-' + tab).classList.add('active');
-  document.getElementById('form-' + tab).classList.add('active');
+  clearMsg();
 }
 
-// ════════════════════════════════════════════════════
-//  LOGIN
-//  Твой роут: POST /auth/login
-//  Ожидает: OAuth2PasswordRequestForm (form-urlencoded)
-//  Поля: username = email, password = пароль
-//  Важно: authenticate_user проверяет по email, поэтому
-//  в поле username мы шлём email
-// ════════════════════════════════════════════════════
-async function handleLogin(e) {
-  e.preventDefault();
-  const msg = document.getElementById('login-msg');
+/* ── MSG ── */
+function showMsg(txt, type='err') {
+  const el = document.getElementById('mmsg');
+  el.textContent = txt; el.className = `mmsg show ${type}`;
+}
+function clearMsg() { document.getElementById('mmsg').className = 'mmsg'; }
+
+/* ── AUTH ── */
+async function doLogin() {
   const email = document.getElementById('l-email').value.trim();
-  const password = document.getElementById('l-password').value;
-
-  setMsg(msg, 'Входим...', '');
+  const pass  = document.getElementById('l-pass').value;
+  if (!email || !pass) { showMsg('Заполните все поля'); return; }
+  setLoad('l-btn', true, 'Войти');
+  clearMsg();
   try {
-    const res = await fetch(`${API_BASE}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ username: email, password }) // username = email!
+    const form = new URLSearchParams();
+    form.append('username', email);
+    form.append('password', pass);
+    const res  = await fetch(`${API}/auth/login`, {
+      method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: form
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.detail || JSON.stringify(data));
+    if (!res.ok) { showMsg(data.detail || 'Ошибка авторизации'); return; }
 
-    LS.setTokens(data.access_token, data.refresh_token);
-    setMsg(msg, '✓ Успешно!', 'ok');
-    setTimeout(async () => {
-      closeModal();
-      await checkAuth();
-      showToast('Добро пожаловать!', 'success');
-    }, 600);
-  } catch (err) {
-    setMsg(msg, '✗ ' + err.message, 'err');
-  }
+    S.token   = data.access_token;
+    S.refresh = data.refresh_token || null;
+    localStorage.setItem('access_token', data.access_token);
+    if (data.refresh_token) localStorage.setItem('refresh_token', data.refresh_token);
+
+    let user = data.user || null;
+    if (!user) {
+      try {
+        const p = JSON.parse(atob(data.access_token.split('.')[1]));
+        user = { id: p.sub, email, role: p.role, name: p.name || email.split('@')[0] };
+      } catch {}
+    }
+    S.user = user;
+    if (user) localStorage.setItem('user_info', JSON.stringify(user));
+
+    updateNavAuth();
+    closeModal();
+    go('dashboard');
+  } catch { showMsg('Нет соединения с сервером'); }
+  finally  { setLoad('l-btn', false, 'Войти'); }
 }
 
-// ════════════════════════════════════════════════════
-//  REGISTER
-//  Твой роут: POST /auth/register
-//  Ожидает JSON: { name, email, password }
-//  Схема UserCreate: name >= 2 символа, password >= 8
-//  ⚠️ Поле именно "name", не "username"!
-// ════════════════════════════════════════════════════
-async function handleRegister(e) {
-  e.preventDefault();
-  const msg = document.getElementById('register-msg');
-  const name = document.getElementById('r-name').value.trim();
+async function doRegister() {
+  const name  = document.getElementById('r-name').value.trim();
   const email = document.getElementById('r-email').value.trim();
-  const password = document.getElementById('r-password').value;
-
-  setMsg(msg, 'Создаём аккаунт...', '');
+  const pass  = document.getElementById('r-pass').value;
+  if (!name || !email || !pass) { showMsg('Заполните все поля'); return; }
+  if (name.length < 2) { showMsg('Имя минимум 2 символа'); return; }
+  if (pass.length < 8) { showMsg('Пароль минимум 8 символов'); return; }
+  setLoad('r-btn', true, 'Создать аккаунт');
+  clearMsg();
   try {
-    const res = await fetch(`${API_BASE}/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password })
+    const res  = await fetch(`${API}/auth/register`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password: pass })
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.detail || JSON.stringify(data));
+    if (!res.ok) { showMsg(data.detail || 'Ошибка регистрации'); return; }
+    showMsg('Аккаунт создан! Теперь войдите.', 'ok');
+    setTimeout(() => switchTab('login'), 1600);
+  } catch { showMsg('Нет соединения с сервером'); }
+  finally  { setLoad('r-btn', false, 'Создать аккаунт'); }
+}
 
-    setMsg(msg, '✓ Аккаунт создан! Теперь войдите.', 'ok');
-    setTimeout(() => switchTab('login'), 1400);
-  } catch (err) {
-    setMsg(msg, '✗ ' + err.message, 'err');
+function doLogout() {
+  S.token = S.refresh = S.user = null;
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('refresh_token');
+  localStorage.removeItem('user_info');
+  updateNavAuth();
+  go('home');
+}
+
+function setLoad(id, on, def) {
+  const b = document.getElementById(id);
+  b.disabled = on;
+  b.querySelector('span').innerHTML = on ? '<span class="spin"></span>Загрузка...' : def;
+}
+
+/* ── NAV STATE ── */
+function updateNavAuth() {
+  const ok = !!S.token;
+  document.getElementById('nav-btns').style.display = ok ? 'none' : '';
+  document.getElementById('nav-user').classList.toggle('show', ok);
+  document.getElementById('nl-dash').style.display = ok ? '' : 'none';
+  if (ok && S.user) {
+    const n = S.user.name || S.user.email?.split('@')[0] || 'U';
+    document.getElementById('nav-av').textContent = n[0].toUpperCase();
+    document.getElementById('nav-un').textContent = n;
   }
 }
 
-function setMsg(el, text, type) {
-  el.textContent = text;
-  el.className = 'modal-msg ' + type;
+/* ── DASHBOARD ── */
+function renderDash() {
+  const now = new Date();
+  document.getElementById('dash-date').textContent =
+    now.toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  const u    = S.user || {};
+  const name = u.name || u.email?.split('@')[0] || 'Пользователь';
+  document.getElementById('dash-name').textContent = name;
+  document.getElementById('p-name').textContent    = name;
+  document.getElementById('p-email').textContent   = u.email || '—';
+  document.getElementById('p-id').textContent      = u.id    || '—';
+  const tok = S.token || '';
+  document.getElementById('p-token').textContent   = tok ? tok.substring(0,80) + '…' : '—';
 }
 
-// ════════════════════════════════════════════════════
-//  CONTACT FORM
-// ════════════════════════════════════════════════════
-function handleContact(e) {
-  e.preventDefault();
-  const status = document.getElementById('form-status');
-  status.textContent = '✓ Сообщение отправлено! Скоро отвечу.';
-  e.target.reset();
-  setTimeout(() => status.textContent = '', 4000);
+/* ── REVEAL ── */
+function observeReveal() {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal:not(.vis)').forEach(el => io.observe(el));
 }
 
-// ════════════════════════════════════════════════════
-//  ЛИЧНЫЙ КАБИНЕТ
-// ════════════════════════════════════════════════════
-function openCabinet() {
-  refreshCabinet();
-  document.getElementById('cabinetOverlay').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-function hideCabinet() {
-  document.getElementById('cabinetOverlay').classList.remove('active');
-  document.body.style.overflow = '';
-}
-document.getElementById('cabinetOverlay').addEventListener('click', (e) => {
-  if (e.target === e.currentTarget) hideCabinet();
+/* ── KEY ── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Enter' && document.getElementById('modal-ov').classList.contains('open')) {
+    document.getElementById('mf-login').classList.contains('active') ? doLogin() : doRegister();
+  }
 });
 
-async function refreshCabinet() {
-  const res = await apiFetch('/auth/me');
-  if (!res) return;
-  if (res.ok) {
-    const user = await res.json();
-    LS.saveUser(user);
-    document.getElementById('cab-email').textContent = user.email;
-    document.getElementById('cab-id').textContent = 'ID: ' + user.id;
+/* ── INIT ── */
+window.addEventListener('load', () => {
+  if (S.token && !S.user) {
+    try {
+      const p = JSON.parse(atob(S.token.split('.')[1]));
+      S.user = { id: p.sub, email: p.email || '', role: p.role, name: p.name || '' };
+      localStorage.setItem('user_info', JSON.stringify(S.user));
+    } catch {}
   }
-
-  // TODO: когда добавишь /users/balance — раскомментируй:
-  // const balRes = await apiFetch('/users/balance');
-  // if (balRes && balRes.ok) {
-  //   const b = await balRes.json();
-  //   document.getElementById('cab-balance').textContent = '$' + b.amount.toFixed(2);
-  // }
-
-  // TODO: когда добавишь /orders — раскомментируй:
-  // loadOrders();
-}
-
-// Готовая функция для заказов — раскомментируй когда бекенд будет готов
-// async function loadOrders() {
-//   const res = await apiFetch('/orders');
-//   if (!res || !res.ok) return;
-//   const orders = await res.json();
-//   const container = document.getElementById('cab-orders');
-//   if (!orders.length) {
-//     container.innerHTML = '<div class="orders-empty"><span class="emoji">📋</span>Заказов пока нет.</div>';
-//     return;
-//   }
-//   container.innerHTML = orders.map(o => `
-//     <div class="order-item">
-//       <div>
-//         <div class="order-name">${o.service_name}</div>
-//         <div class="order-date">${new Date(o.created_at).toLocaleDateString('ru')}</div>
-//         <div class="order-price">$${o.price}</div>
-//       </div>
-//       <span class="order-status ${o.status === 'done' ? 'done' : 'pending'}">
-//         ${o.status === 'done' ? 'Готово' : 'В работе'}
-//       </span>
-//     </div>
-//   `).join('');
-// }
+  updateNavAuth();
+  observeReveal();
+});
 </script>
 </body>
 </html>
