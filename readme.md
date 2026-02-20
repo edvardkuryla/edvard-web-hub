@@ -41,7 +41,7 @@ with a strong focus on scalability and long-term growth.
 
 - Secure user authentication with JWT
 - Base structure for managing digital services and products
-- API-first design (ready for React / Vue / mobile clients)
+- API-first design (yes only 1 HTML but sorry i'm not an Frontend developer)
 - Modern security practices
 - Database schema management via SQLAlchemy
 - Automatic API documentation (Swagger / OpenAPI)
@@ -63,7 +63,8 @@ with a strong focus on scalability and long-term growth.
 │   ├── services/          # Logic
 │   └── api/v1 # routers
 ├── .env # Make yourself
-├── .gitignore
+├── tests/
+├── .gitignore # Make yourself
 ├── requirements.txt
 └── README.md
 ```
