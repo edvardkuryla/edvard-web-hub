@@ -7,6 +7,7 @@ from typing import Generator
 load_dotenv()
 
 DATABASE_URL = getenv("DATABASE_URL")
+TEST_DATABASE_URL = "postgresql+psycopg2://admin:1234@localhost:5435/database_test"
 
 print (f"DEBUG: Connecting to {DATABASE_URL}")
 

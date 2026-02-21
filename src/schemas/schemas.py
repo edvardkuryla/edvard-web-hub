@@ -13,6 +13,7 @@ class UserLogin(BaseModel):
 class UserOut(BaseModel):
     id: int
     email: EmailStr
+    model_config = {"from_attributes": True}
 
 class Config:
     from_attributes = True
