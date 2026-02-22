@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, datetime, Numeric
 from sqlalchemy.orm import relationship
 from config.database.database import Base
-from datetime import datetime
 
 class User(Base):
     __tablename__ = "users"
@@ -12,6 +11,7 @@ class User(Base):
     password_hash = Column(String, nullable=False)
     role = Column(String, default="user")
     refresh_tokens = relationship("RefreshToken", back_populates="user")
+    amount = (Numeric(10, 2))
 
 class RefreshToken(Base):
     __tablename__ = "refresh_tokens"
@@ -25,7 +25,7 @@ class Transaction(Base):
     __tablename__ = "transactions"
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id"))
-    amount = Column(Numeric(10, 2))
+    amount = (Numeric(10, 2))
     type = Column(String) # deposit / withdraw / payment
     status = Column(String) # pending / success / failed
-    created_at = Column(datetime)
+    created_at = Column(datetime, default=datetime.utcnow)

@@ -12,7 +12,7 @@ Built with **FastAPI**, **PostgreSQL**, and **JWT authentication**.
 
 ## Overview
 
-My project is part of my portfolio. Everything except the front end was written by me with minimal use of AI
+My project is part of my portfolio.
 
 It serves as a foundation for:
 - a personal portfolio website
@@ -31,7 +31,7 @@ with a strong focus on scalability and long-term growth.
 - **Framework:** FastAPI
 - **Database:** PostgreSQL
 - **ORM:** SQLAlchemy
-- **Authentication:** JWT (JSON Web Tokens)
+- **Authentication:** JWT
 - **Password Hashing:** Argon2
 - **Environment Configuration:** python-dotenv
 
@@ -87,7 +87,7 @@ Planned improvements include:
 
 ## Setup & Run
 
-Create a virtual environment, install dependencies, configure environment variables,
+Create a virtual environment, install dependencies, configure environment variables, (venv recommended)
 ensure PostgreSQL is running, and start the server with:
 
 uvicorn app.main:app --reload
