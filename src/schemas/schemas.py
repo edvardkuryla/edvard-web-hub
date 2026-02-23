@@ -1,5 +1,6 @@
 from pyclbr import Class
 from pydantic import BaseModel, Field, EmailStr
+from decimal import Decimal
 
 class UserCreate(BaseModel):
     name: str = Field(..., strip_whitespace=True, min_length=2, description="The name must be longer than 2 characters")
@@ -24,3 +25,9 @@ class Token(BaseModel):
 
 class RefreshRequest(BaseModel):
     refresh_token: str
+
+class BalanceChange(BaseModel):
+    amount: Decimal = Field(gt=0)
+
+class BalanceResponse(BaseModel):
+    balance: Decimal
