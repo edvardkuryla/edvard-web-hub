@@ -31,11 +31,9 @@ def register(data: UserCreate, db: Session = Depends(get_db)):
     return user
 
 @auth.get("/me", response_model=UserOut)
-def get_me(current_user: dict = Depends(get_current_user)):
-    return {
-        "id": current_user.get("user_id"),
-        "email": current_user.get("email", "test@test.com")
-    }
+def get_me(current_user: UserOut = Depends(get_current_user)):
+    return current_user
+
 @auth.post("/refresh")
 def refresh(data: RefreshRequest, db: Session = Depends(get_db)):
     result = refresh_access_token(db, data.refresh_token)

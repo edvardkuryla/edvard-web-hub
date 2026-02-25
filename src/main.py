@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from config.database.database import Base, engine
 from src.api.v1.auth import auth
 from src.models.models import User
-from src.api.v1.transactions import transaction as balance_router
+from src.api.v1.transactions import router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -16,3 +16,4 @@ app.add_middleware(
 )
 
 app.include_router(auth)
+app.include_router(router)

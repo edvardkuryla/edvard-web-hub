@@ -1,23 +1,22 @@
-from decimal import Decimal
+from sqlalchemy.orm import Session
 from src.models.models import User, Transaction
 
-def deposit(db, user: User, amount: Decimal):
-    user.balance += amount
+def update_user_balance(db: Session, user: User, new_balance):
+    user.balance = new_balance
+    db.add(user)
 
-    tx = Transaction(user_id=user.id, amount=amount, type="deposit", status="success")
-
+def create_transaction(
+    db: Session,
+    user_id: int,
+    amount,
+    operation: str,
+    status: str = "success",
+):
+    tx = Transaction(
+        user_id=user_id,
+        amount=amount,
+        type=operation,
+        status=status,
+    )
     db.add(tx)
-    db.commit()
-    db.refresh(user)
-    return user.balance
-
-def withdraw(db, user: User, amount: Decimal):
-    if user .balance < amount:
-        return None
-    user.balance -= amount
-
-    tx = Transaction(user_id=user.id, amount=amount, type="withdraw", status="success")
-    db.add(tx)
-    db.commit()
-    db.refresh(user)
-    return user.balance
+    return tx
