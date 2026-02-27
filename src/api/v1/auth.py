@@ -2,9 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 from config.database.database import get_db
-from src.services.users_service import authenticate_user, login_user, save_refresh_token, register_user
+from src.services.users_service import authenticate_user, login_user, register_user
 from src.schemas.schemas import UserOut, UserCreate, RefreshRequest
 import src.repositories.users as repo
+from src.repositories.users import add_refresh_token
 from config.deps import get_current_user
 
 auth = APIRouter(prefix="/auth", tags=["Auth"])
@@ -20,7 +21,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     access, refresh = login_user(user)
     
     # ДОБАВИЛИ db первым аргументом
-    save_refresh_token(db, refresh, user.id)
+    add_refresh_token(db, refresh, user.id)
     
     return {"access_token": access, "refresh_token": refresh, "token_type": "bearer"}
 

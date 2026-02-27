@@ -1,5 +1,5 @@
 from argon2 import PasswordHasher
-from argon2.exceptions import VerifyMismatchError
+from argon2.exceptions import VerifyMismatchError, VerificationError
 from datetime import datetime, timedelta, timezone
 from jose import JWTError, jwt
 from config.config import settings
@@ -13,7 +13,7 @@ def verify_password(password: str, hashed: str) -> bool:
     try:
         ph.verify(hashed, password)
         return True
-    except VerifyMismatchError:
+    except (VerifyMismatchError, VerificationError):
         return False
     
 def create_access_token(data: dict):
